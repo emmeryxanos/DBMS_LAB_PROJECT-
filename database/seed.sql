@@ -1,5 +1,6 @@
 
 
+<<<<<<< HEAD
 DELETE FROM adherencealert;
 DELETE FROM doselog;
 DELETE FROM medicationschedule;
@@ -20,6 +21,29 @@ DELETE FROM allergy;
 DELETE FROM disease;
 DELETE FROM patient;
 DELETE FROM doctor;
+=======
+-- ► DISEASES
+INSERT INTO Disease (disease_name, severity, description) VALUES
+('Hypertension',      'moderate', 'Chronic elevated blood pressure'),
+('Type 2 Diabetes',   'moderate', 'Chronic high blood sugar due to insulin resistance'),
+('Asthma',            'moderate', 'Chronic inflammatory airway disease causing breathing difficulty'),
+('Migraine',          'mild',     'Recurrent moderate to severe headaches'),
+('GERD',              'mild',     'Gastroesophageal reflux disease causing acid reflux'),
+('Allergic Rhinitis', 'mild',     'Inflammation of the nasal passages due to allergens'),
+('Hyperlipidemia',    'mild',     'Elevated levels of lipids in the blood'),
+('Common Cold',       'mild',     'Viral upper respiratory infection');
+
+
+-- ► ALLERGIES
+INSERT INTO Allergy (allergy_name, description) VALUES
+('Penicillin',  'Allergy to penicillin-based antibiotics'),
+('Sulfa Drugs', 'Allergy to sulfonamide-based medications'),
+('Aspirin',     'Allergy to aspirin and related NSAIDs'),
+('Pollen',      'Seasonal allergy to airborne pollen'),
+('Dust Mites',  'Allergy to household dust mites'),
+('Peanuts',     'Food allergy to peanuts and peanut products');
+
+>>>>>>> c269758336e50e42840cb0d783c74af1a0739f7b
 
 -- ► DOCTORS
 INSERT INTO doctor (full_name, specialization, license_no, phone, chamber) VALUES
@@ -145,6 +169,7 @@ INSERT INTO doselog (schedule_id, patient_id, scheduled_at, taken_at, status) VA
 (3, 2, '2026-06-07 22:00', NULL,                'missed');
 
 -- ► ADHERENCE ALERTS
+<<<<<<< HEAD
 INSERT INTO adherencealert (patient_id, alert_type, message, severity, resolved) VALUES
 (3, 'missed_streak', 'Patient Karim Hossain missed 3 consecutive doses of Metformin', 'high',     FALSE),
 (3, 'low_adherence', 'Patient Karim Hossain adherence dropped below 60%',             'critical', FALSE),
@@ -168,3 +193,122 @@ INSERT INTO recoverylog (patient_id, log_date, symptom_score, recovery_score, no
 (2, '2026-06-03', 3, 8, 'Good progress'),
 (2, '2026-06-04', 2, 9, 'Almost normal'),
 (2, '2026-06-05', 1, 10,'Fully recovered');
+=======
+INSERT INTO AdherenceAlert (patient_id, alert_type, message, severity, resolved) VALUES
+(3, 'missed_streak',  'Patient Karim Hossain missed 3 consecutive doses of Metformin', 'high',     FALSE),
+(3, 'low_adherence',  'Patient Karim Hossain adherence dropped below 60%',             'critical', FALSE),
+(1, 'missed_streak',  'Patient Rahim Mia missed a dose of Paracetamol',                'low',      TRUE),
+(5, 'low_adherence',  'Patient Jamal Uddin adherence at 71% this week',                'medium',   FALSE);
+
+
+-- ► PATIENT ALLERGIES
+INSERT INTO PatientAllergy (patient_id, allergy_id, noted_date) VALUES
+(2, 1, '2020-03-10'),   -- Sumaiya Begum   - Penicillin
+(4, 2, '2019-07-22'),   -- Fatema Khatun   - Sulfa Drugs
+(6, 4, '2026-05-12'),   -- Nasrin Akter    - Pollen
+(6, 5, '2026-05-12'),   -- Nasrin Akter    - Dust Mites
+(9, 3, '2021-01-15');   -- Hasan Ali       - Aspirin
+
+
+-- ► PATIENT DISEASE HISTORY
+INSERT INTO PatientDiseaseHistory (patient_id, disease_id, diagnosed_date, status, notes) VALUES
+(1,  8, '2026-05-01', 'recovered', 'Recovered after a week of medication'),
+(2,  1, '2026-05-03', 'active',    'Newly diagnosed, started on Amlodipine and Atorvastatin'),
+(3,  2, '2018-04-12', 'chronic',   'Long-term diabetic, on Metformin and Insulin'),
+(4,  4, '2026-05-07', 'active',    'Recurrent migraine episodes, prescribed Cetirizine for triggers'),
+(5,  1, '2015-09-01', 'chronic',   'Long-term hypertension, requires daily Amlodipine'),
+(6,  6, '2026-05-12', 'active',    'Seasonal allergic rhinitis triggered by pollen and dust'),
+(7,  7, '2026-05-15', 'active',    'Elevated cholesterol, prescribed Atorvastatin'),
+(8,  4, '2026-05-18', 'active',    'Frequent migraine episodes affecting sleep'),
+(9,  5, '2026-05-20', 'active',    'GERD symptoms managed with Omeprazole'),
+(10, 3, '2010-06-01', 'chronic',   'Long-term asthma, uses Salbutamol inhaler as needed');
+
+
+-- ► MEDICINE-ALLERGY CONFLICTS
+INSERT INTO MedicineAllergyConflict (medicine_id, allergy_id, reaction, severity) VALUES
+(2, 1, 'Skin rash, hives, possible anaphylaxis in penicillin-allergic patients', 'severe'),
+(8, 1, 'Mild cross-reactivity rash possible in penicillin-allergic patients',    'mild'),
+(6, 2, 'Cross-reaction skin rash reported in sulfa-sensitive patients',         'mild');
+
+
+-- ► DRUG INTERACTIONS
+INSERT INTO DrugInteraction (medicine1_id, medicine2_id, severity, warning_message) VALUES
+(3, 4, 'mild',     'Combined use may require closer monitoring of blood pressure and blood sugar levels'),
+(4, 7, 'moderate', 'Increased risk of muscle toxicity (myopathy) when amlodipine and atorvastatin are combined'),
+(2, 6, 'mild',     'May cause increased drowsiness when amoxicillin and cetirizine are taken together'),
+(2, 5, 'moderate', 'Omeprazole can alter stomach acidity and reduce amoxicillin absorption if not timed correctly'),
+(4, 9, 'severe',   'Amlodipine can mask the warning signs of insulin-induced hypoglycemia');
+
+
+-- ► MEDICAL TESTS
+INSERT INTO MedicalTest (patient_id, doctor_id, test_name, result, test_date, status) VALUES
+(1,  2, 'Complete Blood Count', 'WBC slightly elevated, consistent with viral infection', '2026-05-01', 'completed'),
+(2,  1, 'ECG',                  'Normal sinus rhythm, no ischemic changes',               '2026-05-03', 'completed'),
+(2,  1, 'Troponin Test',        'Negative',                                               '2026-05-03', 'completed'),
+(3,  2, 'HbA1c',                '7.8% - above target range',                              '2026-05-05', 'completed'),
+(3,  2, 'Fasting Blood Sugar',  '145 mg/dL',                                              '2026-05-05', 'completed'),
+(5,  1, 'Lipid Profile',        'LDL 160 mg/dL, HDL 38 mg/dL',                            '2026-05-10', 'completed'),
+(7,  1, 'Lipid Profile',        NULL,                                                     '2026-05-15', 'pending'),
+(8,  3, 'MRI Brain',            'No structural abnormality detected',                     '2026-05-18', 'completed'),
+(10, 1, 'Spirometry',           'Mild airway obstruction consistent with asthma',         '2026-05-22', 'completed');
+
+
+-- ► RECOVERY LOGS (symptom and recovery scores, 1-10 scale)
+INSERT INTO RecoveryLog (patient_id, log_date, symptom_score, recovery_score, notes) VALUES
+-- Patient 1: steady recovery
+(1, '2026-06-01', 7, 3, 'Fever still high'),
+(1, '2026-06-02', 6, 4, 'Slight improvement'),
+(1, '2026-06-03', 5, 5, 'Fever reducing'),
+(1, '2026-06-04', 3, 7, 'Feeling much better'),
+(1, '2026-06-05', 2, 8, 'Almost fully recovered'),
+-- Patient 2: good recovery
+(2, '2026-06-01', 6, 4, 'Chest pain reduced after medication'),
+(2, '2026-06-02', 5, 5, 'Stable'),
+(2, '2026-06-03', 4, 6, 'Improving steadily'),
+(2, '2026-06-04', 3, 7, 'Minimal symptoms'),
+(2, '2026-06-05', 2, 8, 'Feeling normal'),
+-- Patient 3: poor recovery due to missed doses
+(3, '2026-06-01', 6, 4, 'Sugar levels unstable'),
+(3, '2026-06-02', 7, 3, 'Missed morning dose'),
+(3, '2026-06-03', 7, 3, 'Still unstable'),
+(3, '2026-06-04', 8, 2, 'Sugar levels high again'),
+(3, '2026-06-05', 7, 3, 'Slight improvement after taking medicine'),
+-- Patient 5: moderate recovery
+(5, '2026-06-01', 5, 5, 'Blood pressure slightly high'),
+(5, '2026-06-02', 5, 5, 'No change'),
+(5, '2026-06-03', 6, 4, 'Missed evening dose, BP spiked'),
+(5, '2026-06-04', 4, 6, 'Back on track'),
+(5, '2026-06-05', 4, 6, 'Stable');
+
+
+-- ► SIDE EFFECT REPORTS
+INSERT INTO SideEffectReport (patient_id, medicine_id, effect_name, severity, notes) VALUES
+(1, 2, 'Mild skin rash',        'medium', 'Appeared on second day of antibiotic course'),
+(2, 4, 'Ankle swelling',        'medium', 'Noticed after two weeks of amlodipine use'),
+(3, 3, 'Nausea',                'low',    'Occurs after morning dose, subsides within an hour'),
+(6, 6, 'Drowsiness',            'low',    'Mild sedation reported after taking cetirizine'),
+(8, 7, 'Muscle pain',           'medium', 'Reported aching in legs since starting atorvastatin');
+
+
+-- ► PHARMACY INVENTORY
+INSERT INTO PharmacyInventory (medicine_id, stock, expiry_date) VALUES
+(1,  500, '2027-12-31'),
+(2,  200, '2026-10-15'),
+(3,  350, '2027-06-30'),
+(4,  150, '2027-03-31'),
+(5,   80, '2026-08-20'),
+(6,  300, '2027-01-15'),
+(7,  120, '2026-12-01'),
+(8,   60, '2026-07-10'),
+(9,   40, '2026-09-05'),
+(10,  90, '2026-11-20');
+
+
+-- ► AUDIT LOG (sample history of changes made through the application)
+INSERT INTO AuditLog (table_name, operation, record_id, old_value, new_value) VALUES
+('Patient',           'UPDATE', 3, '{"phone":"01800000099"}',  '{"phone":"01800000003"}'),
+('Appointment',       'INSERT', 10, NULL,                       '{"patient_id":10,"doctor_id":1,"status":"scheduled"}'),
+('Prescription',      'UPDATE', 1,  '{"status":"active"}',      '{"status":"completed"}'),
+('PharmacyInventory',  'UPDATE', 8,  '{"stock":75}',             '{"stock":60}'),
+('AdherenceAlert',     'UPDATE', 3,  '{"resolved":false}',       '{"resolved":false}');
+>>>>>>> c269758336e50e42840cb0d783c74af1a0739f7b
