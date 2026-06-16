@@ -1,6 +1,9 @@
+-- ============================================================
+--  MedTrack | database/seed.sql
+--  Sample data for development/testing.
+--  Run after schema.sql, views.sql, procedures.sql, triggers.sql.
+-- ============================================================
 
-
-<<<<<<< HEAD
 DELETE FROM adherencealert;
 DELETE FROM doselog;
 DELETE FROM medicationschedule;
@@ -21,7 +24,7 @@ DELETE FROM allergy;
 DELETE FROM disease;
 DELETE FROM patient;
 DELETE FROM doctor;
-=======
+
 -- ► DISEASES
 INSERT INTO Disease (disease_name, severity, description) VALUES
 ('Hypertension',      'moderate', 'Chronic elevated blood pressure'),
@@ -42,8 +45,6 @@ INSERT INTO Allergy (allergy_name, description) VALUES
 ('Pollen',      'Seasonal allergy to airborne pollen'),
 ('Dust Mites',  'Allergy to household dust mites'),
 ('Peanuts',     'Food allergy to peanuts and peanut products');
-
->>>>>>> c269758336e50e42840cb0d783c74af1a0739f7b
 
 -- ► DOCTORS
 INSERT INTO doctor (full_name, specialization, license_no, phone, chamber) VALUES
@@ -169,31 +170,6 @@ INSERT INTO doselog (schedule_id, patient_id, scheduled_at, taken_at, status) VA
 (3, 2, '2026-06-07 22:00', NULL,                'missed');
 
 -- ► ADHERENCE ALERTS
-<<<<<<< HEAD
-INSERT INTO adherencealert (patient_id, alert_type, message, severity, resolved) VALUES
-(3, 'missed_streak', 'Patient Karim Hossain missed 3 consecutive doses of Metformin', 'high',     FALSE),
-(3, 'low_adherence', 'Patient Karim Hossain adherence dropped below 60%',             'critical', FALSE),
-(1, 'missed_streak', 'Patient Rahim Mia missed a dose of Paracetamol',                'low',      TRUE),
-(5, 'low_adherence', 'Patient Jamal Uddin adherence at 71% this week',                'medium',   FALSE);
-
--- ► RECOVERY LOGS
-INSERT INTO recoverylog (patient_id, log_date, symptom_score, recovery_score, notes) VALUES
-(1, '2026-06-01', 7, 4, 'Still feeling weak'),
-(1, '2026-06-02', 6, 5, 'Slightly better'),
-(1, '2026-06-03', 5, 6, 'Improving'),
-(1, '2026-06-04', 4, 7, 'Much better today'),
-(1, '2026-06-05', 3, 8, 'Almost recovered'),
-(3, '2026-06-01', 8, 3, 'Very sick, skipping doses'),
-(3, '2026-06-02', 9, 2, 'Worse today'),
-(3, '2026-06-03', 8, 3, 'No improvement'),
-(3, '2026-06-04', 7, 4, 'Slightly better'),
-(3, '2026-06-05', 6, 5, 'Taking medicine again'),
-(2, '2026-06-01', 5, 6, 'Chest pain manageable'),
-(2, '2026-06-02', 4, 7, 'Better with medication'),
-(2, '2026-06-03', 3, 8, 'Good progress'),
-(2, '2026-06-04', 2, 9, 'Almost normal'),
-(2, '2026-06-05', 1, 10,'Fully recovered');
-=======
 INSERT INTO AdherenceAlert (patient_id, alert_type, message, severity, resolved) VALUES
 (3, 'missed_streak',  'Patient Karim Hossain missed 3 consecutive doses of Metformin', 'high',     FALSE),
 (3, 'low_adherence',  'Patient Karim Hossain adherence dropped below 60%',             'critical', FALSE),
@@ -228,7 +204,7 @@ INSERT INTO PatientDiseaseHistory (patient_id, disease_id, diagnosed_date, statu
 INSERT INTO MedicineAllergyConflict (medicine_id, allergy_id, reaction, severity) VALUES
 (2, 1, 'Skin rash, hives, possible anaphylaxis in penicillin-allergic patients', 'severe'),
 (8, 1, 'Mild cross-reactivity rash possible in penicillin-allergic patients',    'mild'),
-(6, 2, 'Cross-reaction skin rash reported in sulfa-sensitive patients',         'mild');
+(6, 2, 'Cross-reaction skin rash reported in sulfa-sensitive patients',          'mild');
 
 
 -- ► DRUG INTERACTIONS
@@ -253,7 +229,7 @@ INSERT INTO MedicalTest (patient_id, doctor_id, test_name, result, test_date, st
 (10, 1, 'Spirometry',           'Mild airway obstruction consistent with asthma',         '2026-05-22', 'completed');
 
 
--- ► RECOVERY LOGS (symptom and recovery scores, 1-10 scale)
+-- ► RECOVERY LOGS
 INSERT INTO RecoveryLog (patient_id, log_date, symptom_score, recovery_score, notes) VALUES
 -- Patient 1: steady recovery
 (1, '2026-06-01', 7, 3, 'Fever still high'),
@@ -283,11 +259,11 @@ INSERT INTO RecoveryLog (patient_id, log_date, symptom_score, recovery_score, no
 
 -- ► SIDE EFFECT REPORTS
 INSERT INTO SideEffectReport (patient_id, medicine_id, effect_name, severity, notes) VALUES
-(1, 2, 'Mild skin rash',        'medium', 'Appeared on second day of antibiotic course'),
-(2, 4, 'Ankle swelling',        'medium', 'Noticed after two weeks of amlodipine use'),
-(3, 3, 'Nausea',                'low',    'Occurs after morning dose, subsides within an hour'),
-(6, 6, 'Drowsiness',            'low',    'Mild sedation reported after taking cetirizine'),
-(8, 7, 'Muscle pain',           'medium', 'Reported aching in legs since starting atorvastatin');
+(1, 2, 'Mild skin rash',  'medium', 'Appeared on second day of antibiotic course'),
+(2, 4, 'Ankle swelling',  'medium', 'Noticed after two weeks of amlodipine use'),
+(3, 3, 'Nausea',          'low',    'Occurs after morning dose, subsides within an hour'),
+(6, 6, 'Drowsiness',      'low',    'Mild sedation reported after taking cetirizine'),
+(8, 7, 'Muscle pain',     'medium', 'Reported aching in legs since starting atorvastatin');
 
 
 -- ► PHARMACY INVENTORY
@@ -304,11 +280,10 @@ INSERT INTO PharmacyInventory (medicine_id, stock, expiry_date) VALUES
 (10,  90, '2026-11-20');
 
 
--- ► AUDIT LOG (sample history of changes made through the application)
+-- ► AUDIT LOG
 INSERT INTO AuditLog (table_name, operation, record_id, old_value, new_value) VALUES
-('Patient',           'UPDATE', 3, '{"phone":"01800000099"}',  '{"phone":"01800000003"}'),
-('Appointment',       'INSERT', 10, NULL,                       '{"patient_id":10,"doctor_id":1,"status":"scheduled"}'),
-('Prescription',      'UPDATE', 1,  '{"status":"active"}',      '{"status":"completed"}'),
-('PharmacyInventory',  'UPDATE', 8,  '{"stock":75}',             '{"stock":60}'),
-('AdherenceAlert',     'UPDATE', 3,  '{"resolved":false}',       '{"resolved":false}');
->>>>>>> c269758336e50e42840cb0d783c74af1a0739f7b
+('Patient',            'UPDATE', 3,  '{"phone":"01800000099"}',              '{"phone":"01800000003"}'),
+('Appointment',        'INSERT', 10, NULL,                                   '{"patient_id":10,"doctor_id":1,"status":"scheduled"}'),
+('Prescription',       'UPDATE', 1,  '{"status":"active"}',                  '{"status":"completed"}'),
+('PharmacyInventory',  'UPDATE', 8,  '{"stock":75}',                         '{"stock":60}'),
+('AdherenceAlert',     'UPDATE', 3,  '{"resolved":false}',                   '{"resolved":false}');
