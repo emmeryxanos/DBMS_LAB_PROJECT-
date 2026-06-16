@@ -46,7 +46,19 @@ function showAlert(type, msg) {
   document.querySelectorAll('.alert').forEach(a => a.classList.remove('show'));
   const el = document.getElementById(`alert-${type}`);
   const msgEl = document.getElementById(`alert-${type}-msg`);
-  if (el && msgEl) { msgEl.textContent = msg; el.classList.add('show'); }
+  if (el && msgEl) {
+    msgEl.textContent = (typeof msg === 'string' && msg) ? msg : (msg?.message || JSON.stringify(msg) || 'An unexpected error occurred');
+    el.classList.add('show');
+  }
+}
+
+// ── Extract readable message from Supabase error
+function errMsg(error) {
+  if (!error) return 'An unexpected error occurred';
+  if (typeof error.message === 'string' && error.message && error.message !== '{}') return error.message;
+  if (error.msg) return error.msg;
+  if (error.error_description) return error.error_description;
+  return 'Something went wrong. Please try again.';
 }
 
 // ── Set button loading state
@@ -84,7 +96,7 @@ async function handleLogin() {
   if (error) {
     showAlert('error', error.message === 'Invalid login credentials'
       ? 'Incorrect email or password. Please try again.'
-      : error.message);
+      : errMsg(error));
     return;
   }
 
@@ -141,16 +153,13 @@ async function handleRegister() {
 
   setLoading('register-btn', 'register-btn-text', false, 'Create Account');
 
-  if (error) { showAlert('error', error.message); return; }
+  if (error) { showAlert('error', errMsg(error)); return; }
 
-  // Manually insert profile after signup
-  if (data.user) {
-    const { error: profileError } = await db.from('user_profiles').insert({
-      id: data.user.id,
-      full_name: fullname,
-      role: role
-    });
-    if (profileError) { showAlert('error', 'Account created but profile failed: ' + profileError.message); return; }
+  // Profile is auto-created by the handle_new_user() DB trigger.
+  // If email confirmation is required, session will be null — tell the user.
+  if (!data.session) {
+    showAlert('success', 'Account created! Check your email to confirm, then log in.');
+    return;
   }
 
   showAlert('success', 'Account created! Redirecting...');

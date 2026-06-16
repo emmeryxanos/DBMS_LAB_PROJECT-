@@ -4,26 +4,13 @@
 --  Run after schema.sql, views.sql, procedures.sql, triggers.sql.
 -- ============================================================
 
-DELETE FROM adherencealert;
-DELETE FROM doselog;
-DELETE FROM medicationschedule;
-DELETE FROM prescriptionmedicine;
-DELETE FROM prescription;
-DELETE FROM appointment;
-DELETE FROM medicaltest;
-DELETE FROM patientallergy;
-DELETE FROM patientdiseasehistory;
-DELETE FROM medicineallergyconflict;
-DELETE FROM druginteraction;
-DELETE FROM pharmacyinventory;
-DELETE FROM auditlog;
-DELETE FROM sideeffectreport;
-DELETE FROM recoverylog;
-DELETE FROM medicine;
-DELETE FROM allergy;
-DELETE FROM disease;
-DELETE FROM patient;
-DELETE FROM doctor;
+TRUNCATE TABLE
+  adherencealert, doselog, medicationschedule, prescriptionmedicine,
+  prescription, appointment, medicaltest, patientallergy,
+  patientdiseasehistory, medicineallergyconflict, druginteraction,
+  pharmacyinventory, auditlog, sideeffectreport, recoverylog,
+  medicine, allergy, disease, patient, doctor
+RESTART IDENTITY CASCADE;
 
 -- ► DISEASES
 INSERT INTO Disease (disease_name, severity, description) VALUES
