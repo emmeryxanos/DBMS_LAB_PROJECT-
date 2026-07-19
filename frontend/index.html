@@ -455,6 +455,23 @@
     <!-- ══ REPORTS ══ -->
     <div class="section" id="section-reports">
       <div class="card">
+        <div class="card-head">
+          <span class="card-title">🚨 Critical Side Effect Alerts</span>
+        </div>
+        <p class="card-desc">Medium/high severity reports straight from patient-submitted SideEffectReport records.</p>
+        <table class="data-table">
+          <thead><tr><th>Patient</th><th>Medicine</th><th>Severity</th><th>Date</th><th>Effect</th><th>Notes</th></tr></thead>
+          <tbody id="side-effect-alerts-list"><tr><td colspan="6"><div class="skeleton-list"></div></td></tr></tbody>
+        </table>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><span class="card-title">📉 Recovery Concerns</span></div>
+        <p class="card-desc">Auto-detected from recent Recovery Log trends — rising symptom scores or declining recovery scores.</p>
+        <div id="recovery-concerns-list"><div class="skeleton-list"></div></div>
+      </div>
+
+      <div class="card">
         <div class="card-head"><span class="card-title">📈 Rolling 7-Day Adherence</span></div>
         <p class="card-desc">SQL Window Function — 7-day rolling average adherence per patient</p>
         <table class="data-table">
@@ -493,19 +510,19 @@
 <!-- Scripts -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="js/config.js?v=2"></script>
-<script src="js/supabase.js?v=2"></script>
-<script src="js/api.js?v=2"></script>
-<script src="js/guard.js?v=2"></script>
-<script src="js/dashboard.js?v=2"></script>
-<script src="js/patients.js?v=2"></script>
-<script src="js/prescriptions.js?v=2"></script>
-<script src="js/appointments.js?v=2"></script>
-<script src="js/charts.js?v=2"></script>
-<script src="js/interactions.js?v=2"></script>
-<script src="js/pharmacy.js?v=2"></script>
-<script src="js/reports.js?v=2"></script>
-<script src="js/risk.js?v=2"></script>
+<script src="js/config.js?v=3"></script>
+<script src="js/supabase.js?v=3"></script>
+<script src="js/api.js?v=3"></script>
+<script src="js/guard.js?v=3"></script>
+<script src="js/dashboard.js?v=3"></script>
+<script src="js/patients.js?v=3"></script>
+<script src="js/prescriptions.js?v=3"></script>
+<script src="js/appointments.js?v=3"></script>
+<script src="js/charts.js?v=3"></script>
+<script src="js/interactions.js?v=3"></script>
+<script src="js/pharmacy.js?v=3"></script>
+<script src="js/reports.js?v=3"></script>
+<script src="js/risk.js?v=3"></script>
 
 <script>
   // ── Theme

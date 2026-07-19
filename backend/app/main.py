@@ -1,7 +1,7 @@
 import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.routes import dashboard, patients, interactions, portal, medicines, prescriptions, account, appointments, access
+from app.routes import dashboard, patients, interactions, portal, medicines, prescriptions, account, appointments, access, reports
 
 app = FastAPI(title="MedTrack API", version="1.0.0")
 
@@ -25,6 +25,7 @@ app.include_router(prescriptions.router, prefix="/api",            tags=["Prescr
 app.include_router(account.router,       prefix="/api/account",    tags=["Account"])
 app.include_router(appointments.router,  prefix="/api/appointments", tags=["Appointments"])
 app.include_router(access.router,        prefix="/api/access",     tags=["Access"])
+app.include_router(reports.router,       prefix="/api/reports",    tags=["Reports"])
 
 @app.get("/")
 def root():

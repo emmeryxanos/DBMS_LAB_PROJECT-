@@ -112,4 +112,12 @@ const api = {
   portalAppointments:(pid) => apiFetch(`/api/portal/appointments/${pid}`),
   portalAllergies:  (pid)  => apiFetch(`/api/portal/allergies/${pid}`),
   reportAllergy:    (body) => apiFetch('/api/portal/allergies', { method: 'POST', body: JSON.stringify(body) }),
+
+  // ── Doctor reports/analytics
+  reportRisk:               () => apiFetch('/api/reports/risk'),
+  reportRollingAdherence:   () => apiFetch('/api/reports/rolling-adherence'),
+  reportPerfectAdherence:   () => apiFetch('/api/reports/perfect-adherence'),
+  reportDiseaseDistribution:() => apiFetch('/api/reports/disease-distribution'),
+  reportSideEffectAlerts:   () => apiFetch('/api/reports/side-effect-alerts'),
+  reportRecoveryConcerns:   () => apiFetch('/api/reports/recovery-concerns'),
 };
