@@ -574,6 +574,50 @@ textarea.form-select { resize: none; line-height: 1.5; }
 .btn:disabled { opacity: .5; cursor: not-allowed; transform: none; }
 .btn-primary { background: var(--blue); color: #fff; box-shadow: 0 2px 8px var(--blue-bg); }
 .btn-danger  { background: var(--red);  color: #fff; box-shadow: 0 2px 8px var(--red-bg);  }
+.btn-sm      { padding: 5px 11px; font-size: 12px; border-radius: 7px; }
+.btn-ghost   { background: var(--surface2); color: var(--text2); border: 1px solid var(--border); }
+
+/* ══════════════════════════════════════
+   ROW ACTION BUTTONS
+══════════════════════════════════════ */
+.row-actions { display: flex; gap: 6px; }
+.row-action-btn {
+  border: 1px solid var(--border);
+  background: var(--surface2);
+  color: var(--text2);
+  border-radius: 7px;
+  padding: 4px 9px;
+  font-size: 12px; cursor: pointer;
+  transition: all .15s;
+  font-family: 'Inter', sans-serif;
+}
+.row-action-btn:hover { background: var(--bg2); }
+.row-action-btn.danger { color: var(--red); border-color: var(--red-bg); }
+.row-action-btn.danger:hover { background: var(--red-bg); }
+
+/* ══════════════════════════════════════
+   MODAL
+══════════════════════════════════════ */
+.modal-overlay {
+  display: none;
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,.45);
+  align-items: center; justify-content: center;
+  z-index: 1000;
+}
+.modal-overlay.active { display: flex; }
+.modal-box {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  padding: 1.5rem;
+  width: 100%; max-width: 420px;
+  max-height: 90vh; overflow-y: auto;
+}
+.modal-title { font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 1rem; }
+.modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 1.25rem; }
+.modal-error { color: var(--red); font-size: 12px; margin-top: 4px; min-height: 16px; }
 
 /* ══════════════════════════════════════
    CHARTS

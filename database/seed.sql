@@ -6,7 +6,7 @@
 
 TRUNCATE TABLE
   adherencealert, doselog, medicationschedule, prescriptionmedicine,
-  prescription, appointment, medicaltest, patientallergy,
+  prescription, doctorpatientaccess, appointment, medicaltest, patientallergy,
   patientdiseasehistory, medicineallergyconflict, druginteraction,
   pharmacyinventory, auditlog, sideeffectreport, recoverylog,
   medicine, allergy, disease, patient, doctor
@@ -76,7 +76,37 @@ INSERT INTO appointment (patient_id, doctor_id, appointment_date, symptoms, stat
 (7,  1, '2026-05-15 09:00', 'Cholesterol check',               'completed'),
 (8,  3, '2026-05-18 15:00', 'Migraine episodes',               'completed'),
 (9,  2, '2026-05-20 10:00', 'Stomach acid issues',             'completed'),
-(10, 1, '2026-05-22 11:00', 'Asthma and breathing issues',     'completed');
+(10, 1, '2026-05-22 11:00', 'Asthma and breathing issues',     'completed'),
+-- appointment lifecycle demo: patient-requested, not yet accepted
+(1,  3, '2026-07-25 10:00', 'Recurring dizziness, second opinion', 'requested'),
+-- appointment lifecycle demo: accepted by doctor, visit not yet happened
+(2,  2, '2026-07-28 09:00', 'Routine follow-up',                   'scheduled');
+
+-- ► DOCTOR-PATIENT ACCESS
+-- Consent grants for the completed/scheduled appointments above.
+INSERT INTO DoctorPatientAccess (doctor_id, patient_id, status, requested_at, granted_at) VALUES
+(2, 1,  'granted', '2026-05-01 10:05', '2026-05-01 10:10'),
+(1, 2,  'granted', '2026-05-03 11:05', '2026-05-03 11:15'),
+(2, 3,  'granted', '2026-05-05 09:35', '2026-05-05 09:40'),
+(3, 4,  'granted', '2026-05-07 14:05', '2026-05-07 14:20'),
+(1, 5,  'granted', '2026-05-10 10:35', '2026-05-10 10:40'),
+(2, 6,  'granted', '2026-05-12 11:35', '2026-05-12 11:50'),
+(1, 7,  'granted', '2026-05-15 09:05', '2026-05-15 09:10'),
+(3, 8,  'granted', '2026-05-18 15:05', '2026-05-18 15:10'),
+(2, 9,  'granted', '2026-05-20 10:05', '2026-05-20 10:10'),
+(1, 10, 'granted', '2026-05-22 11:05', '2026-05-22 11:10');
+
+-- Access lifecycle demo: Dr. Kamal Uddin has requested access to Rahim Mia's
+-- record ahead of the pending appointment (11), patient hasn't responded yet.
+INSERT INTO DoctorPatientAccess (doctor_id, patient_id, status, requested_at) VALUES
+(3, 1, 'pending', '2026-07-20 09:00');
+
+-- Access lifecycle demo: Nusrat Jahan's access to Sumaiya Begum's record was
+-- later revoked by the patient.
+UPDATE DoctorPatientAccess
+SET status = 'revoked', revoked_at = '2026-06-15 12:00'
+WHERE doctor_id = 1 AND patient_id = 2;
+
 
 -- ► PRESCRIPTIONS
 INSERT INTO prescription (appointment_id, start_date, end_date, notes, status) VALUES
@@ -165,12 +195,15 @@ INSERT INTO AdherenceAlert (patient_id, alert_type, message, severity, resolved)
 
 
 -- ► PATIENT ALLERGIES
-INSERT INTO PatientAllergy (patient_id, allergy_id, noted_date) VALUES
-(2, 1, '2020-03-10'),   -- Sumaiya Begum   - Penicillin
-(4, 2, '2019-07-22'),   -- Fatema Khatun   - Sulfa Drugs
-(6, 4, '2026-05-12'),   -- Nasrin Akter    - Pollen
-(6, 5, '2026-05-12'),   -- Nasrin Akter    - Dust Mites
-(9, 3, '2021-01-15');   -- Hasan Ali       - Aspirin
+-- Historical entries are doctor-confirmed; the last row demos a fresh
+-- patient self-report still awaiting doctor confirmation.
+INSERT INTO PatientAllergy (patient_id, allergy_id, noted_date, status, reported_by, confirmed_by, confirmed_at) VALUES
+(2, 1, '2020-03-10', 'confirmed', 'doctor',  1, '2020-03-10 00:00'),   -- Sumaiya Begum   - Penicillin
+(4, 2, '2019-07-22', 'confirmed', 'doctor',  3, '2019-07-22 00:00'),   -- Fatema Khatun   - Sulfa Drugs
+(6, 4, '2026-05-12', 'confirmed', 'doctor',  2, '2026-05-12 00:00'),   -- Nasrin Akter    - Pollen
+(6, 5, '2026-05-12', 'confirmed', 'doctor',  2, '2026-05-12 00:00'),   -- Nasrin Akter    - Dust Mites
+(9, 3, '2021-01-15', 'confirmed', 'doctor',  2, '2021-01-15 00:00'),   -- Hasan Ali       - Aspirin
+(1, 6, '2026-07-18', 'pending',   'patient', NULL, NULL);              -- Rahim Mia       - Peanuts (self-reported, unconfirmed)
 
 
 -- ► PATIENT DISEASE HISTORY

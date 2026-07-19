@@ -1,7 +1,8 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 from app.database import supabase
+from app.auth import require_role
 
-router = APIRouter()
+router = APIRouter(dependencies=[Depends(require_role("doctor", "admin"))])
 
 
 @router.get("/stats")

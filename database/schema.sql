@@ -56,10 +56,12 @@ CREATE TABLE Appointment (
     doctor_id        INT         NOT NULL REFERENCES Doctor(doctor_id)   ON DELETE CASCADE,
     appointment_date TIMESTAMP   NOT NULL,
     symptoms         TEXT,
-    status           VARCHAR(10) NOT NULL DEFAULT 'scheduled'
-                                 CHECK (status IN ('scheduled','completed','cancelled')),
+    status           VARCHAR(10) NOT NULL DEFAULT 'requested'
+                                 CHECK (status IN ('requested','scheduled','completed','cancelled')),
     created_at       TIMESTAMP   DEFAULT NOW()
 );
+
+CREATE INDEX idx_appointment_doctor_patient ON Appointment(doctor_id, patient_id);
 
 CREATE TABLE Prescription (
     prescription_id SERIAL      PRIMARY KEY,
@@ -87,12 +89,34 @@ CREATE TABLE PrescriptionMedicine (
 );
 
 CREATE TABLE PatientAllergy (
-    patient_id INT  NOT NULL REFERENCES Patient(patient_id) ON DELETE CASCADE,
-    allergy_id INT  NOT NULL REFERENCES Allergy(allergy_id) ON DELETE CASCADE,
-    noted_date DATE DEFAULT CURRENT_DATE,
+    patient_id   INT         NOT NULL REFERENCES Patient(patient_id) ON DELETE CASCADE,
+    allergy_id   INT         NOT NULL REFERENCES Allergy(allergy_id) ON DELETE CASCADE,
+    noted_date   DATE        DEFAULT CURRENT_DATE,
+    status       VARCHAR(10) NOT NULL DEFAULT 'pending'
+                             CHECK (status IN ('pending','confirmed','rejected')),
+    reported_by  VARCHAR(10) NOT NULL DEFAULT 'patient'
+                             CHECK (reported_by IN ('patient','doctor')),
+    confirmed_by INT REFERENCES Doctor(doctor_id),
+    confirmed_at TIMESTAMP,
 
     PRIMARY KEY (patient_id, allergy_id)
 );
+
+CREATE TABLE DoctorPatientAccess (
+    access_id          SERIAL      PRIMARY KEY,
+    doctor_id          INT         NOT NULL REFERENCES Doctor(doctor_id)   ON DELETE CASCADE,
+    patient_id         INT         NOT NULL REFERENCES Patient(patient_id) ON DELETE CASCADE,
+    granted_by_patient BOOLEAN     NOT NULL DEFAULT TRUE,
+    status             VARCHAR(10) NOT NULL DEFAULT 'pending'
+                                   CHECK (status IN ('pending','granted','denied','revoked')),
+    requested_at       TIMESTAMP   DEFAULT NOW(),
+    granted_at         TIMESTAMP,
+    revoked_at         TIMESTAMP,
+
+    UNIQUE (doctor_id, patient_id)
+);
+
+CREATE INDEX idx_dpa_patient_status ON DoctorPatientAccess(patient_id, status);
 
 CREATE TABLE PatientDiseaseHistory (
     patient_id     INT         NOT NULL REFERENCES Patient(patient_id) ON DELETE CASCADE,

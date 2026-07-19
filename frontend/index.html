@@ -25,6 +25,12 @@
       <span class="nav-link-icon">👥</span> Patients
     </a>
     <p class="nav-group-label">Clinical</p>
+    <a class="nav-link" onclick="showSection('prescriptions',this)">
+      <span class="nav-link-icon">📝</span> Prescriptions
+    </a>
+    <a class="nav-link" onclick="showSection('appointments',this)">
+      <span class="nav-link-icon">📅</span> Appointment Requests
+    </a>
     <a class="nav-link" onclick="showSection('interactions',this)">
       <span class="nav-link-icon">⚠️</span> Drug Interactions
     </a>
@@ -169,18 +175,154 @@
       <div class="card">
         <div class="card-head">
           <span class="card-title">👥 All Patients</span>
-          <input class="search-box" type="text" placeholder="Search by name..." id="patient-search" oninput="searchPatients(this.value)">
+          <div style="display:flex;gap:10px;align-items:center">
+            <input class="search-box" type="text" placeholder="Search by name..." id="patient-search" oninput="searchPatients(this.value)">
+            <button class="btn btn-primary btn-sm" onclick="openPatientModal()">+ Add Patient</button>
+          </div>
         </div>
         <table class="data-table">
           <thead>
-            <tr><th>Patient</th><th>Age</th><th>Gender</th><th>Blood Group</th><th>Phone</th><th>Adherence</th><th>Risk</th></tr>
+            <tr><th>Patient</th><th>Age</th><th>Gender</th><th>Blood Group</th><th>Phone</th><th>Adherence</th><th>Risk</th><th>Access</th><th>Actions</th></tr>
           </thead>
-          <tbody id="patient-list"><tr><td colspan="7"><div class="skeleton-list"></div></td></tr></tbody>
+          <tbody id="patient-list"><tr><td colspan="9"><div class="skeleton-list"></div></td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ══ PATIENT MODAL (add/edit) ══ -->
+    <div class="modal-overlay" id="patient-modal">
+      <div class="modal-box">
+        <div class="modal-title" id="patient-modal-title">Add Patient</div>
+        <form id="patient-form">
+          <div class="form-group">
+            <label class="form-label">Full Name</label>
+            <input class="form-select" id="pf-full_name" required>
+          </div>
+          <div class="form-group" style="margin-top:10px">
+            <label class="form-label">Date of Birth</label>
+            <input class="form-select" type="date" id="pf-dob" required>
+          </div>
+          <div class="form-group" style="margin-top:10px">
+            <label class="form-label">Gender</label>
+            <select class="form-select" id="pf-gender" required>
+              <option value="">Select...</option>
+              <option value="M">Male</option>
+              <option value="F">Female</option>
+              <option value="O">Other</option>
+            </select>
+          </div>
+          <div class="form-group" style="margin-top:10px">
+            <label class="form-label">Blood Group</label>
+            <select class="form-select" id="pf-blood_group">
+              <option value="">Unknown</option>
+              <option>A+</option><option>A-</option><option>B+</option><option>B-</option>
+              <option>AB+</option><option>AB-</option><option>O+</option><option>O-</option>
+            </select>
+          </div>
+          <div class="form-group" style="margin-top:10px">
+            <label class="form-label">Phone</label>
+            <input class="form-select" id="pf-phone" required>
+          </div>
+          <div class="form-group" style="margin-top:10px">
+            <label class="form-label">Address</label>
+            <input class="form-select" id="pf-address">
+          </div>
+          <div class="modal-error" id="patient-form-error"></div>
+          <div class="modal-actions">
+            <button type="button" class="btn btn-ghost btn-sm" onclick="closePatientModal()">Cancel</button>
+            <button type="submit" class="btn btn-primary btn-sm">Save</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- ══ PRESCRIPTIONS ══ -->
+    <div class="section" id="section-prescriptions">
+      <div class="card">
+        <div class="card-head"><span class="card-title">📝 New Prescription</span></div>
+        <p class="card-desc">Interaction and allergy warnings are shown automatically as you add medicines. Warnings never block submission.</p>
+
+        <div class="checker-row">
+          <div class="form-group">
+            <label class="form-label">Patient</label>
+            <select id="rx-patient" class="form-select" onchange="onRxPatientChange()"><option value="">Select patient...</option></select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Appointment</label>
+            <select id="rx-appointment" class="form-select"><option value="">Select appointment...</option></select>
+          </div>
+          <button type="button" class="btn btn-ghost" onclick="toggleNewAppointmentForm()">+ New Appointment</button>
+        </div>
+
+        <div id="rx-new-appointment" class="checker-row" style="display:none">
+          <div class="form-group">
+            <label class="form-label">Appointment Date/Time</label>
+            <input type="datetime-local" id="rx-appt-date" class="form-select">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Symptoms</label>
+            <input id="rx-appt-symptoms" class="form-select" placeholder="e.g. Fever, cough">
+          </div>
+          <button type="button" class="btn btn-primary" onclick="createRxAppointment()">Create</button>
+        </div>
+
+        <div class="checker-row" style="margin-top:10px">
+          <div class="form-group">
+            <label class="form-label">Start Date</label>
+            <input type="date" id="rx-start-date" class="form-select">
+          </div>
+          <div class="form-group">
+            <label class="form-label">End Date</label>
+            <input type="date" id="rx-end-date" class="form-select">
+          </div>
+          <div class="form-group" style="flex:2">
+            <label class="form-label">Notes</label>
+            <input id="rx-notes" class="form-select" placeholder="General prescription notes">
+          </div>
+        </div>
+
+        <div class="card-head" style="margin-top:18px">
+          <span class="card-title">💊 Medicines</span>
+          <button type="button" class="btn btn-ghost btn-sm" onclick="addRxMedicineRow()">+ Add Medicine</button>
+        </div>
+        <div id="rx-medicine-rows"></div>
+
+        <div id="rx-warnings" style="margin-top:1rem"></div>
+
+        <div class="modal-error" id="rx-form-error"></div>
+        <div class="modal-actions" style="justify-content:flex-start">
+          <button type="button" class="btn btn-primary" onclick="submitPrescription()">Create Prescription</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><span class="card-title">📋 Prescriptions For Selected Patient</span></div>
+        <table class="data-table">
+          <thead><tr><th>Doctor</th><th>Dates</th><th>Medicines</th><th>Status</th></tr></thead>
+          <tbody id="rx-list"><tr><td colspan="4" class="empty">Select a patient to view prescriptions</td></tr></tbody>
         </table>
       </div>
     </div>
 
     <!-- ══ DRUG INTERACTIONS ══ -->
+    <div class="section" id="section-appointments">
+      <div class="card">
+        <div class="card-head"><span class="card-title">🔔 Incoming Appointment Requests</span></div>
+        <table class="data-table">
+          <thead><tr><th>Patient</th><th>Requested Date/Time</th><th>Symptoms</th><th>Actions</th></tr></thead>
+          <tbody id="appt-requests"><tr><td colspan="4" class="empty">Loading...</td></tr></tbody>
+        </table>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><span class="card-title">📅 My Upcoming Appointments</span></div>
+        <table class="data-table">
+          <thead><tr><th>Patient</th><th>Date/Time</th><th>Symptoms</th><th>Status</th><th>Actions</th></tr></thead>
+          <tbody id="appt-scheduled"><tr><td colspan="5" class="empty">Loading...</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
     <div class="section" id="section-interactions">
       <div class="card">
         <div class="card-head"><span class="card-title">⚠️ Drug Interaction Checker</span></div>
@@ -228,10 +370,37 @@
         <div id="allergy-result" style="margin-top:1rem"></div>
       </div>
       <div class="card">
+        <div class="card-head"><span class="card-title">➕ Add Allergy to Patient</span></div>
+        <div class="checker-row">
+          <div class="form-group">
+            <label class="form-label">Patient</label>
+            <select id="new-allergy-patient" class="form-select"><option value="">Select patient...</option></select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Existing Allergy</label>
+            <select id="new-allergy-existing" class="form-select"><option value="">Select allergy...</option></select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Or New Allergy Name</label>
+            <input id="new-allergy-name" class="form-select" placeholder="e.g. Latex">
+          </div>
+          <button class="btn btn-primary" onclick="addAllergyToPatient()">Add</button>
+        </div>
+        <div id="add-allergy-error" class="modal-error"></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><span class="card-title">🔔 Pending Allergy Reports</span></div>
+        <p class="card-desc">Self-reported by patients — confirm or reject before they're treated as clinical fact.</p>
+        <table class="data-table">
+          <thead><tr><th>Patient</th><th>Allergy</th><th>Reported</th><th>Actions</th></tr></thead>
+          <tbody id="pending-allergy-list"><tr><td colspan="4"><div class="skeleton-list"></div></td></tr></tbody>
+        </table>
+      </div>
+      <div class="card">
         <div class="card-head"><span class="card-title">📋 Patient Allergy Records</span></div>
         <table class="data-table">
-          <thead><tr><th>Patient</th><th>Allergy</th><th>Noted Date</th></tr></thead>
-          <tbody id="allergy-list"><tr><td colspan="3"><div class="skeleton-list"></div></td></tr></tbody>
+          <thead><tr><th>Patient</th><th>Allergy</th><th>Status</th><th>Noted Date</th><th>Actions</th></tr></thead>
+          <tbody id="allergy-list"><tr><td colspan="5"><div class="skeleton-list"></div></td></tr></tbody>
         </table>
       </div>
     </div>
@@ -324,16 +493,19 @@
 <!-- Scripts -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="js/config.js"></script>
-<script src="js/supabase.js"></script>
-<script src="js/api.js"></script>
-<script src="js/guard.js"></script>
-<script src="js/dashboard.js"></script>
-<script src="js/charts.js"></script>
-<script src="js/interactions.js"></script>
-<script src="js/pharmacy.js"></script>
-<script src="js/reports.js"></script>
-<script src="js/risk.js"></script>
+<script src="js/config.js?v=2"></script>
+<script src="js/supabase.js?v=2"></script>
+<script src="js/api.js?v=2"></script>
+<script src="js/guard.js?v=2"></script>
+<script src="js/dashboard.js?v=2"></script>
+<script src="js/patients.js?v=2"></script>
+<script src="js/prescriptions.js?v=2"></script>
+<script src="js/appointments.js?v=2"></script>
+<script src="js/charts.js?v=2"></script>
+<script src="js/interactions.js?v=2"></script>
+<script src="js/pharmacy.js?v=2"></script>
+<script src="js/reports.js?v=2"></script>
+<script src="js/risk.js?v=2"></script>
 
 <script>
   // ── Theme
@@ -361,7 +533,8 @@
     document.getElementById('section-' + name)?.classList.add('active');
     if (el) el.classList.add('active');
     const titles = {
-      overview:'Dashboard', patients:'Patients',
+      overview:'Dashboard', patients:'Patients', prescriptions:'Prescriptions',
+      appointments:'Appointment Requests',
       interactions:'Drug Interactions', allergies:'Allergy Conflicts',
       risk:'Risk Scores', pharmacy:'Pharmacy Stock',
       reports:'Reports', audit:'Audit Log'

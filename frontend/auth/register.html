@@ -84,24 +84,73 @@
           <label class="form-label">I am a...</label>
           <div class="role-grid">
             <div>
-              <input type="radio" name="role" id="role-doctor" value="doctor" class="role-option">
+              <input type="radio" name="role" id="role-doctor" value="doctor" class="role-option" onchange="onRoleChange()">
               <label for="role-doctor" class="role-label">
                 <span class="role-icon">👨‍⚕️</span>Doctor
               </label>
             </div>
             <div>
-              <input type="radio" name="role" id="role-patient" value="patient" class="role-option" checked>
+              <input type="radio" name="role" id="role-patient" value="patient" class="role-option" checked onchange="onRoleChange()">
               <label for="role-patient" class="role-label">
                 <span class="role-icon">🧑‍🦽</span>Patient
               </label>
             </div>
             <div>
-              <input type="radio" name="role" id="role-admin" value="admin" class="role-option">
+              <input type="radio" name="role" id="role-admin" value="admin" class="role-option" onchange="onRoleChange()">
               <label for="role-admin" class="role-label">
                 <span class="role-icon">⚙️</span>Admin
               </label>
             </div>
           </div>
+        </div>
+
+        <!-- Phone (patient/doctor) -->
+        <div class="form-group full" id="field-phone">
+          <label class="form-label">Phone Number</label>
+          <input type="text" id="phone" class="form-input" placeholder="e.g. 01800000001" autocomplete="tel">
+        </div>
+
+        <!-- Patient-only fields -->
+        <div class="form-group" id="field-dob">
+          <label class="form-label">Date of Birth</label>
+          <input type="date" id="dob" class="form-input">
+        </div>
+        <div class="form-group" id="field-gender">
+          <label class="form-label">Gender</label>
+          <select id="gender" class="form-input">
+            <option value="">Select...</option>
+            <option value="M">Male</option>
+            <option value="F">Female</option>
+            <option value="O">Other</option>
+          </select>
+        </div>
+        <div class="form-group" id="field-blood_group">
+          <label class="form-label">Blood Group (optional)</label>
+          <select id="blood_group" class="form-input">
+            <option value="">Unknown</option>
+            <option>A+</option><option>A-</option>
+            <option>B+</option><option>B-</option>
+            <option>AB+</option><option>AB-</option>
+            <option>O+</option><option>O-</option>
+          </select>
+        </div>
+        <div class="form-group full" id="field-address">
+          <label class="form-label">Address (optional)</label>
+          <input type="text" id="address" class="form-input" placeholder="e.g. Mirpur, Dhaka">
+        </div>
+
+        <!-- Doctor-only fields -->
+        <div class="form-group full" id="field-specialization">
+          <label class="form-label">Specialization</label>
+          <input type="text" id="specialization" class="form-input" placeholder="e.g. Cardiologist">
+        </div>
+        <div class="form-group" id="field-license_no">
+          <label class="form-label">License Number</label>
+          <input type="text" id="license_no" class="form-input" placeholder="e.g. LIC-004">
+        </div>
+        <div class="form-group" id="field-chamber">
+          <label class="form-label">Chamber (optional)</label>
+          <input type="text" id="chamber" class="form-input" placeholder="e.g. Square Hospital, Room 5">
         </div>
 
         <!-- Password -->
@@ -145,15 +194,17 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="../js/config.js"></script>
-<script src="../js/supabase.js"></script>
-<script src="../js/auth.js"></script>
+<script src="../js/config.js?v=2"></script>
+<script src="../js/supabase.js?v=2"></script>
+<script src="../js/api.js?v=2"></script>
+<script src="../js/auth.js?v=2"></script>
 <script>
   (function(){
     const saved = localStorage.getItem('medtrack-theme') || 'dark';
     document.documentElement.setAttribute('data-theme', saved);
     updateThemeBtn(saved);
   })();
+  onRoleChange();
   function toggleTheme(){
     const curr = document.documentElement.getAttribute('data-theme');
     const next = curr === 'dark' ? 'light' : 'dark';

@@ -32,13 +32,14 @@
   // Get full profile
   const { data: profile } = await db
     .from('user_profiles')
-    .select('role, full_name')
+    .select('role, full_name, linked_id')
     .eq('id', session.user.id)
     .single();
 
   const role = profile?.role ?? 'patient';
   const name = profile?.full_name ?? session.user.email;
   const initials = name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+  const linkedId = profile?.linked_id ?? null;
 
   // Role-based page access
   if (role === 'patient' && page.includes('index.html')) {
@@ -51,7 +52,7 @@
   }
 
   // Store globally
-  window.CURRENT_USER = { id: session.user.id, email: session.user.email, role, name, initials };
+  window.CURRENT_USER = { id: session.user.id, email: session.user.email, role, name, initials, linkedId };
 
   // Render topbar user widget once DOM is ready
   document.addEventListener('DOMContentLoaded', () => renderUserWidget(name, role, initials));

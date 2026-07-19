@@ -21,10 +21,23 @@ async function loadMedicineDropdowns() {
 // ── Load patient dropdown for allergy checker
 async function loadAllergyPatientDropdown() {
   const data = await api.patients();
-  const sel  = document.getElementById('allergy-patient');
-  if (!sel) return;
-  sel.innerHTML = `<option value="">Select patient...</option>` +
+  const opts = `<option value="">Select patient...</option>` +
     data.map(p => `<option value="${p.patient_id}">${p.full_name}</option>`).join('');
+
+  const sel = document.getElementById('allergy-patient');
+  if (sel) sel.innerHTML = opts;
+
+  const newSel = document.getElementById('new-allergy-patient');
+  if (newSel) newSel.innerHTML = opts;
+}
+
+// ── Load allergy catalog dropdown (for attaching an existing allergy)
+async function loadAllergyCatalogDropdown() {
+  const data = await api.allergyCatalog();
+  const sel  = document.getElementById('new-allergy-existing');
+  if (!sel) return;
+  sel.innerHTML = `<option value="">Select allergy...</option>` +
+    data.map(a => `<option value="${a.allergy_id}">${a.allergy_name}</option>`).join('');
 }
 
 // ── Check drug interaction
@@ -139,19 +152,95 @@ async function loadAllergyList() {
   if (!tbody) return;
 
   if (!data?.length) {
-    tbody.innerHTML = `<tr><td colspan="3" class="empty">No allergy records found</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="5" class="empty">No allergy records found</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = data.map(a => {
+    const badge = a.status === 'confirmed' ? 'badge-green' : a.status === 'rejected' ? 'badge-red' : 'badge-yellow';
+    return `<tr>
+      <td><strong>${a.patient?.full_name ?? '—'}</strong></td>
+      <td><span class="badge badge-orange">${a.allergy?.allergy_name ?? '—'}</span></td>
+      <td><span class="badge ${badge}">${a.status}</span></td>
+      <td>${a.noted_date ?? '—'}</td>
+      <td>
+        <button class="row-action-btn danger" onclick="removeAllergyFromPatient(${a.patient_id}, ${a.allergy_id})">Remove</button>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+// ── Pending patient-reported allergies awaiting doctor confirmation
+async function loadPendingAllergies() {
+  const tbody = document.getElementById('pending-allergy-list');
+  if (!tbody) return;
+  const data = await api.pendingAllergies();
+
+  if (!data?.length) {
+    tbody.innerHTML = `<tr><td colspan="4" class="empty">No pending reports</td></tr>`;
     return;
   }
 
   tbody.innerHTML = data.map(a => `<tr>
     <td><strong>${a.patient?.full_name ?? '—'}</strong></td>
     <td><span class="badge badge-orange">${a.allergy?.allergy_name ?? '—'}</span></td>
-    <td>${a.noted_date ?? '—'}</td>
+    <td>${a.noted_date ?? '—'} (${a.reported_by})</td>
+    <td>
+      <div class="row-actions">
+        <button class="row-action-btn" onclick="respondToAllergyReport(${a.patient_id}, ${a.allergy_id}, 'confirm')">Confirm</button>
+        <button class="row-action-btn danger" onclick="respondToAllergyReport(${a.patient_id}, ${a.allergy_id}, 'reject')">Reject</button>
+      </div>
+    </td>
   </tr>`).join('');
+}
+
+async function respondToAllergyReport(patientId, allergyId, action) {
+  if (action === 'confirm') await api.confirmPatientAllergy(patientId, allergyId);
+  else await api.rejectPatientAllergy(patientId, allergyId);
+  loadPendingAllergies();
+  loadAllergyList();
+}
+
+// ── Add allergy to patient (existing lookup or new allergy name)
+async function addAllergyToPatient() {
+  const pid      = parseInt(document.getElementById('new-allergy-patient')?.value);
+  const allergyId= document.getElementById('new-allergy-existing')?.value;
+  const newName  = document.getElementById('new-allergy-name')?.value.trim();
+  const err      = document.getElementById('add-allergy-error');
+  if (!err) return;
+  err.textContent = '';
+
+  if (!pid) { err.textContent = 'Select a patient.'; return; }
+  if (!allergyId && !newName) { err.textContent = 'Pick an existing allergy or enter a new one.'; return; }
+
+  const body = {
+    patient_id: pid,
+    allergy_id: allergyId ? parseInt(allergyId) : null,
+    new_allergy_name: allergyId ? null : newName,
+  };
+
+  try {
+    await api.addPatientAllergy(pid, body);
+    document.getElementById('new-allergy-existing').value = '';
+    document.getElementById('new-allergy-name').value = '';
+    await loadAllergyCatalogDropdown();
+    await loadAllergyList();
+  } catch (ex) {
+    err.textContent = ex.message || 'Failed to add allergy.';
+  }
+}
+
+// ── Remove allergy from patient
+async function removeAllergyFromPatient(patientId, allergyId) {
+  if (!confirm('Remove this allergy record?')) return;
+  await api.removePatientAllergy(patientId, allergyId);
+  loadAllergyList();
 }
 
 // ── Init
 loadMedicineDropdowns();
 loadAllergyPatientDropdown();
+loadAllergyCatalogDropdown();
 loadAllInteractions();
 loadAllergyList();
+loadPendingAllergies();

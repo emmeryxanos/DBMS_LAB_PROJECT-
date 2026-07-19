@@ -36,6 +36,9 @@
     <a class="nav-link" onclick="showTab('history', this)">
       <span class="nav-link-icon">📊</span> My History
     </a>
+    <a class="nav-link" onclick="showTab('access', this)">
+      <span class="nav-link-icon">🔐</span> Doctor Access
+    </a>
   </nav>
   <div class="sidebar-footer">
     <div class="sidebar-theme-toggle" onclick="toggleTheme()">
@@ -269,16 +272,81 @@
       </div>
     </div>
 
+    <!-- ══ TAB: DOCTOR ACCESS ══ -->
+    <div class="section" id="tab-access">
+
+      <div class="two-col">
+        <div class="card">
+          <div class="card-head"><span class="card-title">📅 Request an Appointment</span></div>
+
+          <div class="form-group" style="margin-bottom:1rem">
+            <label class="form-label">Doctor</label>
+            <select id="req-doctor" class="form-select">
+              <option value="">Select doctor...</option>
+            </select>
+          </div>
+          <div class="form-group" style="margin-bottom:1rem">
+            <label class="form-label">Preferred Date &amp; Time</label>
+            <input type="datetime-local" id="req-date" class="form-select">
+          </div>
+          <div class="form-group" style="margin-bottom:1.2rem">
+            <label class="form-label">Symptoms</label>
+            <textarea id="req-symptoms" class="form-select" rows="3" placeholder="Briefly describe your symptoms..."></textarea>
+          </div>
+          <button class="btn btn-primary" onclick="submitAppointmentRequest()">Request Appointment</button>
+          <div id="req-msg" style="margin-top:12px"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-head"><span class="card-title">🔔 Pending Access Requests</span></div>
+          <div id="access-pending"><div class="empty">Loading...</div></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><span class="card-title">🩺 Doctors With Access To My Record</span></div>
+        <table class="data-table">
+          <thead><tr><th>Doctor</th><th>Specialization</th><th>Status</th><th>Granted On</th><th></th></tr></thead>
+          <tbody id="my-access-grants"><tr><td colspan="5" class="empty">Loading...</td></tr></tbody>
+        </table>
+      </div>
+
+      <div class="two-col">
+        <div class="card">
+          <div class="card-head"><span class="card-title">🌿 Report an Allergy</span></div>
+          <div class="form-group" style="margin-bottom:1rem">
+            <label class="form-label">Allergy Name</label>
+            <input type="text" id="al-name" class="form-select" placeholder="e.g. Peanuts, Penicillin...">
+          </div>
+          <div class="form-group" style="margin-bottom:1.2rem">
+            <label class="form-label">Notes (optional)</label>
+            <textarea id="al-desc" class="form-select" rows="2" placeholder="Reaction details..."></textarea>
+          </div>
+          <button class="btn btn-primary" onclick="submitAllergyReport()">Report Allergy</button>
+          <div id="al-msg" style="margin-top:12px"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-head"><span class="card-title">📋 My Allergies</span></div>
+          <table class="data-table">
+            <thead><tr><th>Allergy</th><th>Status</th><th>Reported By</th></tr></thead>
+            <tbody id="my-allergies"><tr><td colspan="3" class="empty">Loading...</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+
   </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="js/config.js"></script>
-<script src="js/supabase.js"></script>
-<script src="js/api.js"></script>
-<script src="js/guard.js"></script>
-<script src="js/patient_portal.js"></script>
+<script src="js/config.js?v=2"></script>
+<script src="js/supabase.js?v=2"></script>
+<script src="js/api.js?v=2"></script>
+<script src="js/guard.js?v=2"></script>
+<script src="js/patient_portal.js?v=2"></script>
 <script>
   // Tab switcher
   function showTab(name, el) {
@@ -289,7 +357,7 @@
     const titles = {
       overview:'My Health Overview', medicines:'My Medicines',
       recovery:'Recovery Log', prescriptions:'My Prescriptions',
-      sideeffects:'Side Effects', history:'My History'
+      sideeffects:'Side Effects', history:'My History', access:'Doctor Access'
     };
     document.getElementById('page-title').textContent = titles[name] || name;
   }

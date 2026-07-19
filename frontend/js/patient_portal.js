@@ -67,6 +67,10 @@ async function init() {
   loadMySideEffects();
   loadMyAppointments();
   loadStatusChart();
+  loadDoctorsDropdown();
+  loadPendingAccessRequests();
+  loadMyAccessGrants();
+  loadMyAllergies();
 }
 
 function showNoPatientMessage() {
@@ -330,12 +334,131 @@ async function loadMyAppointments() {
   const tbody = document.getElementById('my-appointments');
   if (!data?.length) { tbody.innerHTML = '<tr><td colspan="4" class="empty">No appointments found</td></tr>'; return; }
   tbody.innerHTML = data.map(a => {
-    const badge = a.status === 'completed' ? 'badge-green' : a.status === 'scheduled' ? 'badge-blue' : 'badge-red';
+    const badge = a.status === 'completed' ? 'badge-green' : a.status === 'scheduled' ? 'badge-blue'
+                : a.status === 'requested' ? 'badge-yellow' : 'badge-red';
     return `<tr>
       <td>${a.doctor?.full_name ?? '—'}</td>
       <td>${new Date(a.appointment_date).toLocaleDateString()}</td>
       <td>${a.symptoms ?? '—'}</td>
       <td><span class="badge ${badge}">${a.status}</span></td>
+    </tr>`;
+  }).join('');
+}
+
+// ── Doctors dropdown for appointment request
+async function loadDoctorsDropdown() {
+  const data = await api.doctors();
+  const sel  = document.getElementById('req-doctor');
+  sel.innerHTML = '<option value="">Select doctor...</option>' +
+    data.map(d => `<option value="${d.doctor_id}">${d.full_name} — ${d.specialization}</option>`).join('');
+}
+
+// ── Request an appointment
+async function submitAppointmentRequest() {
+  const doctorId  = parseInt(document.getElementById('req-doctor').value);
+  const date      = document.getElementById('req-date').value;
+  const symptoms  = document.getElementById('req-symptoms').value;
+  const msgEl     = document.getElementById('req-msg');
+
+  if (!doctorId || !date) {
+    msgEl.innerHTML = `<div class="result-warning" style="padding:8px 12px;border-radius:6px">Please select a doctor and a date/time.</div>`;
+    return;
+  }
+
+  try {
+    await api.requestAppointment({ doctor_id: doctorId, appointment_date: date, symptoms });
+    msgEl.innerHTML = `<div class="result-safe" style="padding:8px 12px;border-radius:6px">✅ Appointment requested! Awaiting doctor confirmation.</div>`;
+    document.getElementById('req-symptoms').value = '';
+    loadMyAppointments();
+    setTimeout(() => msgEl.innerHTML = '', 4000);
+  } catch (e) {
+    msgEl.innerHTML = `<div class="result-danger" style="padding:8px 12px;border-radius:6px">Error: ${e.message}</div>`;
+  }
+}
+
+// ── Pending access requests (doctor wants access to my record)
+async function loadPendingAccessRequests() {
+  const data = await api.getPendingAccessRequests();
+  const el   = document.getElementById('access-pending');
+  if (!data?.length) { el.innerHTML = '<div class="empty">No pending requests</div>'; return; }
+  el.innerHTML = data.map(r => `<div class="dose-row">
+    <div>
+      <div style="font-size:13px;font-weight:500">${r.doctor?.full_name ?? '—'}</div>
+      <div style="font-size:11px;color:var(--muted);margin-top:3px">${r.doctor?.specialization ?? ''} wants access to your medical record</div>
+    </div>
+    <div style="display:flex;gap:6px">
+      <button class="btn btn-green" style="padding:5px 12px;font-size:12px" onclick="respondToAccess(${r.access_id}, 'approve')">Allow</button>
+      <button class="btn btn-red" style="padding:5px 12px;font-size:12px" onclick="respondToAccess(${r.access_id}, 'deny')">Deny</button>
+    </div>
+  </div>`).join('');
+}
+
+async function respondToAccess(accessId, action) {
+  if (action === 'approve') await api.approveAccess(accessId);
+  else await api.denyAccess(accessId);
+  loadPendingAccessRequests();
+  loadMyAccessGrants();
+}
+
+// ── Doctors with access to my record
+async function loadMyAccessGrants() {
+  const data  = await api.getMyAccessGrants();
+  const tbody = document.getElementById('my-access-grants');
+  if (!data?.length) { tbody.innerHTML = '<tr><td colspan="5" class="empty">No doctors have requested access yet</td></tr>'; return; }
+  tbody.innerHTML = data.map(g => {
+    const badge = g.status === 'granted' ? 'badge-green' : g.status === 'pending' ? 'badge-yellow' : g.status === 'revoked' ? 'badge-red' : 'badge-blue';
+    const action = g.status === 'granted'
+      ? `<button class="btn btn-red" style="padding:5px 12px;font-size:12px" onclick="revokeDoctorAccess(${g.access_id})">Revoke</button>`
+      : '';
+    return `<tr>
+      <td>${g.doctor?.full_name ?? '—'}</td>
+      <td>${g.doctor?.specialization ?? '—'}</td>
+      <td><span class="badge ${badge}">${g.status}</span></td>
+      <td>${g.granted_at ? new Date(g.granted_at).toLocaleDateString() : '—'}</td>
+      <td>${action}</td>
+    </tr>`;
+  }).join('');
+}
+
+async function revokeDoctorAccess(accessId) {
+  await api.revokeAccess(accessId);
+  loadMyAccessGrants();
+}
+
+// ── Report an allergy
+async function submitAllergyReport() {
+  const name  = document.getElementById('al-name').value.trim();
+  const desc  = document.getElementById('al-desc').value;
+  const msgEl = document.getElementById('al-msg');
+
+  if (!name) {
+    msgEl.innerHTML = `<div class="result-warning" style="padding:8px 12px;border-radius:6px">Please enter an allergy name.</div>`;
+    return;
+  }
+
+  try {
+    await api.reportAllergy({ patient_id: PATIENT_ID, new_allergy_name: name, description: desc });
+    msgEl.innerHTML = `<div class="result-safe" style="padding:8px 12px;border-radius:6px">✅ Allergy reported — awaiting doctor confirmation.</div>`;
+    document.getElementById('al-name').value = '';
+    document.getElementById('al-desc').value = '';
+    loadMyAllergies();
+    setTimeout(() => msgEl.innerHTML = '', 4000);
+  } catch (e) {
+    msgEl.innerHTML = `<div class="result-danger" style="padding:8px 12px;border-radius:6px">Error: ${e.message}</div>`;
+  }
+}
+
+// ── My allergies
+async function loadMyAllergies() {
+  const data  = await api.portalAllergies(PATIENT_ID);
+  const tbody = document.getElementById('my-allergies');
+  if (!data?.length) { tbody.innerHTML = '<tr><td colspan="3" class="empty">No allergies recorded</td></tr>'; return; }
+  tbody.innerHTML = data.map(a => {
+    const badge = a.status === 'confirmed' ? 'badge-green' : a.status === 'rejected' ? 'badge-red' : 'badge-yellow';
+    return `<tr>
+      <td>${a.allergy?.allergy_name ?? '—'}</td>
+      <td><span class="badge ${badge}">${a.status}</span></td>
+      <td>${a.reported_by}</td>
     </tr>`;
   }).join('');
 }

@@ -119,6 +119,18 @@ async function handleLogin() {
   }, 1000);
 }
 
+// ── Show/hide role-specific fields on the register form
+function onRoleChange() {
+  const role = document.querySelector('input[name="role"]:checked')?.value ?? 'patient';
+  const patientFields = ['field-dob', 'field-gender', 'field-blood_group', 'field-address'];
+  const doctorFields  = ['field-specialization', 'field-license_no', 'field-chamber'];
+  const phoneField    = document.getElementById('field-phone');
+
+  patientFields.forEach(id => { const el = document.getElementById(id); if (el) el.style.display = role === 'patient' ? '' : 'none'; });
+  doctorFields.forEach(id  => { const el = document.getElementById(id); if (el) el.style.display = role === 'doctor'  ? '' : 'none'; });
+  if (phoneField) phoneField.style.display = role === 'admin' ? 'none' : '';
+}
+
 // ── REGISTER
 async function handleRegister() {
   const fullname  = document.getElementById('fullname')?.value.trim();
@@ -126,6 +138,7 @@ async function handleRegister() {
   const password  = document.getElementById('password')?.value;
   const confirm   = document.getElementById('confirm-password')?.value;
   const role      = document.querySelector('input[name="role"]:checked')?.value ?? 'patient';
+  const phone     = document.getElementById('phone')?.value.trim();
 
   // Validate
   if (!fullname || !email || !password || !confirm) {
@@ -140,6 +153,35 @@ async function handleRegister() {
   if (password !== confirm) {
     showAlert('error', 'Passwords do not match.'); return;
   }
+  if (role !== 'admin' && !phone) {
+    showAlert('error', 'Please enter a phone number.'); return;
+  }
+
+  let patientBody = null, doctorBody = null;
+  if (role === 'patient') {
+    const dob    = document.getElementById('dob')?.value;
+    const gender = document.getElementById('gender')?.value;
+    if (!dob || !gender) { showAlert('error', 'Please fill in your date of birth and gender.'); return; }
+    patientBody = {
+      full_name:   fullname,
+      phone,
+      dob,
+      gender,
+      blood_group: document.getElementById('blood_group')?.value || null,
+      address:     document.getElementById('address')?.value.trim() || null,
+    };
+  } else if (role === 'doctor') {
+    const specialization = document.getElementById('specialization')?.value.trim();
+    const licenseNo       = document.getElementById('license_no')?.value.trim();
+    if (!specialization || !licenseNo) { showAlert('error', 'Please fill in your specialization and license number.'); return; }
+    doctorBody = {
+      full_name: fullname,
+      phone,
+      specialization,
+      license_no: licenseNo,
+      chamber: document.getElementById('chamber')?.value.trim() || null,
+    };
+  }
 
   setLoading('register-btn', 'register-btn-text', true, 'Create Account');
 
@@ -151,17 +193,33 @@ async function handleRegister() {
     }
   });
 
-  setLoading('register-btn', 'register-btn-text', false, 'Create Account');
-
-  if (error) { showAlert('error', errMsg(error)); return; }
+  if (error) {
+    setLoading('register-btn', 'register-btn-text', false, 'Create Account');
+    showAlert('error', errMsg(error));
+    return;
+  }
 
   // Profile is auto-created by the handle_new_user() DB trigger.
-  // If email confirmation is required, session will be null — tell the user.
+  // If email confirmation is required, session will be null — the clinical
+  // record gets created on first login instead (see login flow).
   if (!data.session) {
+    setLoading('register-btn', 'register-btn-text', false, 'Create Account');
     showAlert('success', 'Account created! Check your email to confirm, then log in.');
     return;
   }
 
+  try {
+    if (patientBody) await api.registerPatientRecord(patientBody);
+    if (doctorBody)  await api.registerDoctorRecord(doctorBody);
+  } catch (ex) {
+    setLoading('register-btn', 'register-btn-text', false, 'Create Account');
+    showAlert('error', ex.message?.includes('409')
+      ? 'That phone number or license number is already registered.'
+      : (ex.message || 'Account created, but the clinical record could not be created.'));
+    return;
+  }
+
+  setLoading('register-btn', 'register-btn-text', false, 'Create Account');
   showAlert('success', 'Account created! Redirecting...');
   setTimeout(() => { window.location.href = 'login.html'; }, 1500);
 }
