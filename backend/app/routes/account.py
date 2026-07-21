@@ -49,8 +49,8 @@ async def register_patient_record(body: PatientSignupIn, user: CurrentUser = Dep
 
     try:
         created = supabase.table("patient").insert(body.model_dump()).execute()
-    except Exception as e:
-        raise HTTPException(status.HTTP_409_CONFLICT, f"Could not create patient record: {e}")
+    except Exception:
+        raise HTTPException(status.HTTP_500_INTERNAL_SERVER_ERROR, "Could not create patient record")
 
     patient_id = created.data[0]["patient_id"]
     supabase.table("user_profiles").update({"linked_id": patient_id}) \
@@ -67,8 +67,8 @@ async def register_doctor_record(body: DoctorSignupIn, user: CurrentUser = Depen
 
     try:
         created = supabase.table("doctor").insert(body.model_dump()).execute()
-    except Exception as e:
-        raise HTTPException(status.HTTP_409_CONFLICT, f"Could not create doctor record: {e}")
+    except Exception:
+        raise HTTPException(status.HTTP_500_INTERNAL_SERVER_ERROR, "Could not create doctor record")
 
     doctor_id = created.data[0]["doctor_id"]
     supabase.table("user_profiles").update({"linked_id": doctor_id}) \
@@ -87,8 +87,8 @@ async def add_patient_role(body: PatientSignupIn, user_id: str = Depends(decode_
 
     try:
         created = supabase.table("patient").insert(body.model_dump()).execute()
-    except Exception as e:
-        raise HTTPException(status.HTTP_409_CONFLICT, f"Could not create patient record: {e}")
+    except Exception:
+        raise HTTPException(status.HTTP_500_INTERNAL_SERVER_ERROR, "Could not create patient record")
 
     patient_id = created.data[0]["patient_id"]
     supabase.table("user_profiles").insert({
@@ -109,8 +109,8 @@ async def add_doctor_role(body: DoctorSignupIn, user_id: str = Depends(decode_be
 
     try:
         created = supabase.table("doctor").insert(body.model_dump()).execute()
-    except Exception as e:
-        raise HTTPException(status.HTTP_409_CONFLICT, f"Could not create doctor record: {e}")
+    except Exception:
+        raise HTTPException(status.HTTP_500_INTERNAL_SERVER_ERROR, "Could not create doctor record")
 
     doctor_id = created.data[0]["doctor_id"]
     supabase.table("user_profiles").insert({

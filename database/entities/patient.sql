@@ -4,7 +4,7 @@ CREATE TABLE Patient (
     dob         DATE         NOT NULL,
     gender      CHAR(1)      NOT NULL CHECK (gender IN ('M','F','O')),
     blood_group VARCHAR(5)   CHECK (blood_group IN ('A+','A-','B+','B-','AB+','AB-','O+','O-')),
-    phone       VARCHAR(15)  NOT NULL UNIQUE,
+    phone       VARCHAR(15)  NOT NULL,
     address     TEXT,
     created_at  TIMESTAMP    DEFAULT NOW()
 );
