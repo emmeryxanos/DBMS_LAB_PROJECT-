@@ -219,16 +219,16 @@ function renderUserWidget(name, role, initials, roles) {
 
   let roleMenuItems = '';
   if (role !== 'patient' && hasPatient) {
-    roleMenuItems += `<a class="user-menu-item" onclick="switchActiveRole('patient')">🔄 Switch to Patient</a>`;
+    roleMenuItems += `<a class="user-menu-item" onclick="switchActiveRole('patient')"><i class="icon" data-lucide="repeat"></i> Switch to Patient</a>`;
   }
   if (role !== 'doctor' && hasDoctor) {
-    roleMenuItems += `<a class="user-menu-item" onclick="switchActiveRole('doctor')">🔄 Switch to Doctor</a>`;
+    roleMenuItems += `<a class="user-menu-item" onclick="switchActiveRole('doctor')"><i class="icon" data-lucide="repeat"></i> Switch to Doctor</a>`;
   }
   if (!hasPatient) {
-    roleMenuItems += `<a class="user-menu-item" onclick="openAddRoleModal('patient')">➕ Add Patient Identity</a>`;
+    roleMenuItems += `<a class="user-menu-item" onclick="openAddRoleModal('patient')"><i class="icon" data-lucide="user-plus"></i> Add Patient Identity</a>`;
   }
   if (!hasDoctor && role !== 'admin') {
-    roleMenuItems += `<a class="user-menu-item" onclick="openAddRoleModal('doctor')">➕ Add Doctor Identity</a>`;
+    roleMenuItems += `<a class="user-menu-item" onclick="openAddRoleModal('doctor')"><i class="icon" data-lucide="user-plus"></i> Add Doctor Identity</a>`;
   }
 
   el.innerHTML = `
@@ -247,7 +247,7 @@ function renderUserWidget(name, role, initials, roles) {
         <div class="user-menu-divider"></div>
         ${roleMenuItems}
         ${roleMenuItems ? '<div class="user-menu-divider"></div>' : ''}
-        <a class="user-menu-item" onclick="handleLogout()">🚪 Sign Out</a>
+        <a class="user-menu-item" onclick="handleLogout()"><i class="icon" data-lucide="log-out"></i> Sign Out</a>
       </div>
     </div>`;
 }

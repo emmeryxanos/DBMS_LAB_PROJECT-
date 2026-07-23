@@ -67,11 +67,11 @@ async function checkInteraction() {
   if (!el) return;
 
   if (!m1 || !m2) {
-    el.innerHTML = `<div class="result-warning"><div class="result-title">⚠️ Select both medicines first</div></div>`;
+    el.innerHTML = `<div class="result-warning"><div class="result-title"><i class="icon" data-lucide="alert-triangle"></i>Select both medicines first</div></div>`;
     return;
   }
   if (m1 === m2) {
-    el.innerHTML = `<div class="result-warning"><div class="result-title">⚠️ Please select two different medicines</div></div>`;
+    el.innerHTML = `<div class="result-warning"><div class="result-title"><i class="icon" data-lucide="alert-triangle"></i>Please select two different medicines</div></div>`;
     return;
   }
 
@@ -82,7 +82,7 @@ async function checkInteraction() {
   if (!data?.length) {
     el.innerHTML = `
       <div class="result-safe">
-        <div class="result-title">✅ No Known Interaction</div>
+        <div class="result-title"><i class="icon" data-lucide="check-circle"></i>No Known Interaction</div>
         <div class="result-msg">These two medicines can be safely prescribed together based on current records.</div>
       </div>`;
     return;
@@ -91,12 +91,12 @@ async function checkInteraction() {
   const i   = data[0];
   const cls = i.severity === 'severe'   ? 'result-danger'  :
               i.severity === 'moderate' ? 'result-warning' : 'result-safe';
-  const icon= i.severity === 'severe'   ? '🚨' :
-              i.severity === 'moderate' ? '⚠️' : 'ℹ️';
+  const icon= i.severity === 'severe'   ? 'siren' :
+              i.severity === 'moderate' ? 'alert-triangle' : 'info';
 
   el.innerHTML = `
     <div class="${cls}">
-      <div class="result-title">${icon} ${i.severity.toUpperCase()} Interaction Detected</div>
+      <div class="result-title"><i class="icon" data-lucide="${icon}"></i>${i.severity.toUpperCase()} Interaction Detected</div>
       <div class="result-msg">${i.warning_message}</div>
     </div>`;
 }
@@ -135,7 +135,7 @@ async function checkAllergyConflict() {
   if (!el) return;
 
   if (!pid || !mid) {
-    el.innerHTML = `<div class="result-warning"><div class="result-title">⚠️ Select both patient and medicine</div></div>`;
+    el.innerHTML = `<div class="result-warning"><div class="result-title"><i class="icon" data-lucide="alert-triangle"></i>Select both patient and medicine</div></div>`;
     return;
   }
 
@@ -146,7 +146,7 @@ async function checkAllergyConflict() {
   if (!conflicts?.length) {
     el.innerHTML = `
       <div class="result-safe">
-        <div class="result-title">✅ Safe to Prescribe</div>
+        <div class="result-title"><i class="icon" data-lucide="check-circle"></i>Safe to Prescribe</div>
         <div class="result-msg">No allergy conflicts found between this patient and this medicine.</div>
       </div>`;
     return;
@@ -156,7 +156,7 @@ async function checkAllergyConflict() {
   const cls = c.severity === 'severe' ? 'result-danger' : 'result-warning';
   el.innerHTML = `
     <div class="${cls}">
-      <div class="result-title">🚨 ALLERGY CONFLICT DETECTED</div>
+      <div class="result-title"><i class="icon" data-lucide="siren"></i>ALLERGY CONFLICT DETECTED</div>
       <div class="result-msg">
         Patient is allergic to <strong>${c.allergy?.allergy_name ?? '—'}</strong>.<br>
         Severity: <strong>${c.severity}</strong> — Reaction: ${c.reaction}

@@ -44,7 +44,7 @@ async function init() {
 
   const hour     = new Date().getHours();
   const greeting = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
-  document.getElementById('welcome-name').textContent = `${greeting}, ${profile?.full_name ?? user.name}! 👋`;
+  document.getElementById('welcome-name').textContent = `${greeting}, ${profile?.full_name ?? user.name}!`;
 
   if (!profile?.linked_id) {
     document.getElementById('welcome-sub').textContent = 'Your account is not linked to a patient record yet. Please contact your doctor.';
@@ -97,7 +97,7 @@ async function loadTodayDoses() {
   document.getElementById('today-count').textContent = data?.length ?? 0;
 
   if (!data?.length) {
-    el.innerHTML = '<div class="empty">No doses scheduled for today 🎉</div>';
+    el.innerHTML = '<div class="empty"><i class="icon" data-lucide="check-circle"></i>No doses scheduled for today</div>';
     return;
   }
 
@@ -107,7 +107,7 @@ async function loadTodayDoses() {
                   d.status === 'missed' ? 'badge-red'    :
                   d.status === 'late'   ? 'badge-yellow' : 'badge-blue';
     const btn = (d.status === 'pending' || d.status === 'missed')
-      ? `<button class="btn btn-green" style="padding:5px 12px;font-size:12px" onclick="markTaken(${d.log_id})">✓ Mark Taken</button>`
+      ? `<button class="btn btn-green" style="padding:5px 12px;font-size:12px" onclick="markTaken(${d.log_id})"><i class="icon icon-sm" data-lucide="check"></i>Mark Taken</button>`
       : `<span class="badge ${badge}">${d.status}</span>`;
     return `<div class="dose-row">
       <div>
@@ -145,8 +145,8 @@ async function loadAdherenceChart() {
     type: 'line',
     data: {
       labels,
-      datasets: [{ label: 'Adherence %', data: values, borderColor: '#10b981',
-        backgroundColor: 'rgba(16,185,129,0.1)', tension: 0.4, fill: true, pointRadius: 4 }]
+      datasets: [{ label: 'Adherence %', data: values, borderColor: '#3fa987',
+        backgroundColor: 'rgba(63,169,135,0.12)', tension: 0.4, fill: true, pointRadius: 4 }]
     },
     options: {
       responsive: true,
@@ -169,8 +169,8 @@ async function loadRecoveryChart() {
     data: {
       labels: data.map(d => d.log_date),
       datasets: [
-        { label: 'Recovery', data: data.map(d => d.recovery_score), borderColor: '#3b82f6', backgroundColor: 'rgba(59,130,246,0.1)', tension: 0.4, fill: true },
-        { label: 'Symptoms', data: data.map(d => d.symptom_score),  borderColor: '#ef4444', backgroundColor: 'rgba(239,68,68,0.1)',  tension: 0.4, fill: true }
+        { label: 'Recovery', data: data.map(d => d.recovery_score), borderColor: '#5c8de8', backgroundColor: 'rgba(92,141,232,0.12)', tension: 0.4, fill: true },
+        { label: 'Symptoms', data: data.map(d => d.symptom_score),  borderColor: '#e1637a', backgroundColor: 'rgba(225,99,122,0.12)',  tension: 0.4, fill: true }
       ]
     },
     options: {
@@ -195,7 +195,7 @@ async function loadStatusChart() {
     type: 'doughnut',
     data: {
       labels: ['Taken', 'Missed', 'Late'],
-      datasets: [{ data: [taken, missed, late], backgroundColor: ['#10b981', '#ef4444', '#f59e0b'], borderWidth: 0 }]
+      datasets: [{ data: [taken, missed, late], backgroundColor: ['#3fa987', '#e1637a', '#c99435'], borderWidth: 0 }]
     },
     options: { responsive: true, plugins: { legend: { labels: { color: '#94a3b8' } } } }
   });
@@ -254,7 +254,7 @@ async function submitRecoveryLog() {
 
   try {
     await api.submitRecovery({ patient_id: PATIENT_ID, log_date: today, symptom_score: symptom, recovery_score: recovery, notes });
-    msgEl.innerHTML = `<div class="result-safe" style="padding:8px 12px;border-radius:6px">✅ Recovery log saved!</div>`;
+    msgEl.innerHTML = `<div class="result-safe" style="padding:8px 12px;border-radius:6px;display:flex;align-items:center;gap:7px"><i class="icon icon-sm" data-lucide="check-circle"></i>Recovery log saved!</div>`;
     loadRecoveryHistory();
     setTimeout(() => msgEl.innerHTML = '', 3000);
   } catch (e) {
@@ -302,7 +302,7 @@ async function submitSideEffect() {
 
   try {
     await api.submitSideEffect({ patient_id: PATIENT_ID, medicine_id: med, effect_name: effect, severity, notes });
-    msgEl.innerHTML = `<div class="result-safe" style="padding:8px 12px;border-radius:6px">✅ Side effect reported!</div>`;
+    msgEl.innerHTML = `<div class="result-safe" style="padding:8px 12px;border-radius:6px;display:flex;align-items:center;gap:7px"><i class="icon icon-sm" data-lucide="check-circle"></i>Side effect reported!</div>`;
     loadMySideEffects();
     document.getElementById('se-effect').value = '';
     document.getElementById('se-notes').value  = '';
@@ -367,7 +367,7 @@ async function submitAppointmentRequest() {
 
   try {
     await api.requestAppointment({ doctor_id: doctorId, appointment_date: date, symptoms });
-    msgEl.innerHTML = `<div class="result-safe" style="padding:8px 12px;border-radius:6px">✅ Appointment requested! Awaiting doctor confirmation.</div>`;
+    msgEl.innerHTML = `<div class="result-safe" style="padding:8px 12px;border-radius:6px;display:flex;align-items:center;gap:7px"><i class="icon icon-sm" data-lucide="check-circle"></i>Appointment requested! Awaiting doctor confirmation.</div>`;
     document.getElementById('req-symptoms').value = '';
     loadMyAppointments();
     setTimeout(() => msgEl.innerHTML = '', 4000);
@@ -438,7 +438,7 @@ async function submitAllergyReport() {
 
   try {
     await api.reportAllergy({ patient_id: PATIENT_ID, new_allergy_name: name, description: desc });
-    msgEl.innerHTML = `<div class="result-safe" style="padding:8px 12px;border-radius:6px">✅ Allergy reported — awaiting doctor confirmation.</div>`;
+    msgEl.innerHTML = `<div class="result-safe" style="padding:8px 12px;border-radius:6px;display:flex;align-items:center;gap:7px"><i class="icon icon-sm" data-lucide="check-circle"></i>Allergy reported — awaiting doctor confirmation.</div>`;
     document.getElementById('al-name').value = '';
     document.getElementById('al-desc').value = '';
     loadMyAllergies();

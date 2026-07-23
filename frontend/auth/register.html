@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,57 +10,56 @@
 </head>
 <body>
 
-<!-- Theme Toggle -->
-<button class="theme-toggle" onclick="toggleTheme()">
-  <span class="theme-icon" id="theme-icon">☀️</span>
-</button>
-
-<!-- ══ LEFT PANEL ══ -->
-<div class="auth-left">
-  <div class="left-top">
-    <div class="left-logo-row">
-      <span class="left-logo">⚕️</span>
-      <span class="left-brand">MedTrack</span>
-    </div>
-    <div class="left-headline">Your health,<br>beautifully tracked.</div>
-    <div class="left-sub">Join thousands of patients and doctors using MedTrack to manage medication and monitor recovery — smarter.</div>
-  </div>
-  <div class="left-bottom">
-    <div class="left-features">
-      <div class="left-feature">
-        <span class="left-feature-icon">💊</span>
-        <span class="left-feature-text">Track every dose, never miss a medicine</span>
-      </div>
-      <div class="left-feature">
-        <span class="left-feature-icon">📈</span>
-        <span class="left-feature-text">Visualize recovery progress with charts</span>
-      </div>
-      <div class="left-feature">
-        <span class="left-feature-icon">⚠️</span>
-        <span class="left-feature-text">Instant drug interaction & allergy warnings</span>
-      </div>
-      <div class="left-feature">
-        <span class="left-feature-icon">🔒</span>
-        <span class="left-feature-text">Secure, private, role-based access</span>
-      </div>
-    </div>
-  </div>
+<div class="mesh-bg" aria-hidden="true">
+  <span class="mesh-blob blob-a"></span>
+  <span class="mesh-blob blob-b"></span>
+  <span class="mesh-blob blob-c"></span>
 </div>
 
-<!-- ══ RIGHT PANEL ══ -->
-<div class="auth-right">
-  <div class="auth-container">
-    <div class="auth-card">
+<!-- Theme Toggle -->
+<button class="theme-toggle" onclick="toggleTheme()">
+  <i class="theme-icon icon" id="theme-icon" data-lucide="moon"></i>
+</button>
 
+<div class="auth-center wide">
+  <div class="auth-card">
+
+    <div class="auth-card-intro">
+      <div class="auth-brand">
+        <i class="auth-brand-icon icon" data-lucide="stethoscope"></i>
+        <span class="auth-brand-name">MedTrack</span>
+      </div>
       <div class="auth-title">Create your account</div>
       <div class="auth-subtitle">Fill in the details below to get started with MedTrack</div>
 
+      <div class="auth-features">
+        <div class="auth-feature">
+          <i class="auth-feature-icon icon" data-lucide="pill"></i>
+          <span class="auth-feature-text">Track every dose, never miss a medicine</span>
+        </div>
+        <div class="auth-feature">
+          <i class="auth-feature-icon icon" data-lucide="trending-up"></i>
+          <span class="auth-feature-text">Visualize recovery progress with charts</span>
+        </div>
+        <div class="auth-feature">
+          <i class="auth-feature-icon icon" data-lucide="shield-alert"></i>
+          <span class="auth-feature-text">Instant drug interaction & allergy warnings</span>
+        </div>
+        <div class="auth-feature">
+          <i class="auth-feature-icon icon" data-lucide="lock"></i>
+          <span class="auth-feature-text">Secure, private, role-based access</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="auth-card-form">
+
       <!-- Alerts -->
       <div class="alert alert-error" id="alert-error">
-        <span>⚠️</span><span id="alert-error-msg">Something went wrong.</span>
+        <i class="icon" data-lucide="alert-circle"></i><span id="alert-error-msg">Something went wrong.</span>
       </div>
       <div class="alert alert-success" id="alert-success">
-        <span>✅</span><span id="alert-success-msg">Account created!</span>
+        <i class="icon" data-lucide="check-circle"></i><span id="alert-success-msg">Account created!</span>
       </div>
 
       <div class="form-grid-2">
@@ -86,19 +85,19 @@
             <div>
               <input type="radio" name="role" id="role-doctor" value="doctor" class="role-option" onchange="onRoleChange()">
               <label for="role-doctor" class="role-label">
-                <span class="role-icon">👨‍⚕️</span>Doctor
+                <i class="role-icon icon" data-lucide="stethoscope"></i>Doctor
               </label>
             </div>
             <div>
               <input type="radio" name="role" id="role-patient" value="patient" class="role-option" checked onchange="onRoleChange()">
               <label for="role-patient" class="role-label">
-                <span class="role-icon">🧑‍🦽</span>Patient
+                <i class="role-icon icon" data-lucide="user"></i>Patient
               </label>
             </div>
             <div>
               <input type="radio" name="role" id="role-admin" value="admin" class="role-option" onchange="onRoleChange()">
               <label for="role-admin" class="role-label">
-                <span class="role-icon">⚙️</span>Admin
+                <i class="role-icon icon" data-lucide="settings"></i>Admin
               </label>
             </div>
           </div>
@@ -160,7 +159,7 @@
             <input type="password" id="password" class="form-input"
               placeholder="Min. 8 characters" autocomplete="new-password"
               oninput="checkStrength(this.value)">
-            <button class="toggle-pw" onclick="togglePw('password',this)" type="button">👁</button>
+            <button class="toggle-pw" onclick="togglePw('password',this)" type="button"><i class="icon" data-lucide="eye"></i></button>
           </div>
           <div class="strength-wrap">
             <div class="strength-bar"><div class="strength-fill" id="strength-fill"></div></div>
@@ -174,7 +173,7 @@
           <div class="input-wrap">
             <input type="password" id="confirm-password" class="form-input"
               placeholder="Repeat your password" autocomplete="new-password">
-            <button class="toggle-pw" onclick="togglePw('confirm-password',this)" type="button">👁</button>
+            <button class="toggle-pw" onclick="togglePw('confirm-password',this)" type="button"><i class="icon" data-lucide="eye"></i></button>
           </div>
         </div>
 
@@ -182,17 +181,20 @@
 
       <!-- Submit -->
       <button class="btn-submit" id="register-btn" onclick="handleRegister()">
-        <span id="register-btn-text">Create Account →</span>
+        <span id="register-btn-text">Create Account</span><i class="icon btn-submit-arrow" data-lucide="arrow-right"></i>
       </button>
 
     </div>
 
-    <div class="auth-footer">
-      Already have an account? <a href="login.html">Sign in here</a>
-    </div>
+  </div>
+
+  <div class="auth-footer">
+    Already have an account? <a href="login.html">Sign in here</a>
   </div>
 </div>
 
+<script src="https://unpkg.com/lucide@latest"></script>
+<script src="../js/icons.js?v=7"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="../js/config.js?v=6"></script>
 <script src="../js/supabase.js?v=6"></script>
@@ -200,7 +202,7 @@
 <script src="../js/auth.js?v=6"></script>
 <script>
   (function(){
-    const saved = localStorage.getItem('medtrack-theme') || 'dark';
+    const saved = localStorage.getItem('medtrack-theme') || 'light';
     document.documentElement.setAttribute('data-theme', saved);
     updateThemeBtn(saved);
   })();
@@ -213,7 +215,7 @@
     updateThemeBtn(next);
   }
   function updateThemeBtn(t){
-    document.getElementById('theme-icon').textContent  = t==='dark' ? '☀️' : '🌙';
+    document.getElementById('theme-icon').setAttribute('data-lucide', t==='dark' ? 'sun' : 'moon');
   }
 </script>
 </body>

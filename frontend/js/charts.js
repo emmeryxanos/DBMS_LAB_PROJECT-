@@ -28,10 +28,10 @@ async function loadAdherenceChart(patientId) {
       datasets: [{
         label: 'Adherence %',
         data: values,
-        borderColor: '#10b981',
-        backgroundColor: 'rgba(16,185,129,0.1)',
+        borderColor: '#3fa987',
+        backgroundColor: 'rgba(63,169,135,0.12)',
         tension: 0.4, fill: true,
-        pointBackgroundColor: '#10b981', pointRadius: 4,
+        pointBackgroundColor: '#3fa987', pointRadius: 4,
       }]
     },
     options: {
@@ -60,14 +60,14 @@ async function loadRecoveryChart(patientId) {
         {
           label: 'Recovery Score',
           data: data.map(d => d.recovery_score),
-          borderColor: '#3b82f6', backgroundColor: 'rgba(59,130,246,0.1)',
-          tension: 0.4, fill: true, pointBackgroundColor: '#3b82f6', pointRadius: 4,
+          borderColor: '#5c8de8', backgroundColor: 'rgba(92,141,232,0.12)',
+          tension: 0.4, fill: true, pointBackgroundColor: '#5c8de8', pointRadius: 4,
         },
         {
           label: 'Symptom Score',
           data: data.map(d => d.symptom_score),
-          borderColor: '#ef4444', backgroundColor: 'rgba(239,68,68,0.1)',
-          tension: 0.4, fill: true, pointBackgroundColor: '#ef4444', pointRadius: 4,
+          borderColor: '#e1637a', backgroundColor: 'rgba(225,99,122,0.12)',
+          tension: 0.4, fill: true, pointBackgroundColor: '#e1637a', pointRadius: 4,
         }
       ]
     },
@@ -97,7 +97,7 @@ async function loadDoseStatusChart(patientId) {
     type: 'doughnut',
     data: {
       labels: ['Taken', 'Missed', 'Late'],
-      datasets: [{ data: [taken, missed, late], backgroundColor: ['#10b981', '#ef4444', '#f59e0b'], borderWidth: 0 }]
+      datasets: [{ data: [taken, missed, late], backgroundColor: ['#3fa987', '#e1637a', '#c99435'], borderWidth: 0 }]
     },
     options: {
       responsive: true,

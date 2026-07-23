@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,36 +13,36 @@
 <!-- ══ SIDEBAR ══ -->
 <aside class="sidebar">
   <div class="sidebar-brand">
-    <span class="brand-icon">⚕️</span>
+    <i class="brand-icon icon" data-lucide="stethoscope"></i>
     <span class="brand-name">MedTrack</span>
   </div>
   <nav class="sidebar-nav">
     <p class="nav-group-label">My Health</p>
     <a class="nav-link active" onclick="showTab('overview', this)">
-      <span class="nav-link-icon">🏠</span> Overview
+      <span class="nav-link-icon-wrap"><i class="nav-link-icon icon" data-lucide="home"></i></span> Overview
     </a>
     <a class="nav-link" onclick="showTab('medicines', this)">
-      <span class="nav-link-icon">💊</span> My Medicines
+      <span class="nav-link-icon-wrap"><i class="nav-link-icon icon" data-lucide="pill"></i></span> My Medicines
     </a>
     <a class="nav-link" onclick="showTab('recovery', this)">
-      <span class="nav-link-icon">💚</span> Recovery Log
+      <span class="nav-link-icon-wrap"><i class="nav-link-icon icon" data-lucide="heart-pulse"></i></span> Recovery Log
     </a>
     <a class="nav-link" onclick="showTab('prescriptions', this)">
-      <span class="nav-link-icon">📋</span> Prescriptions
+      <span class="nav-link-icon-wrap"><i class="nav-link-icon icon" data-lucide="clipboard-list"></i></span> Prescriptions
     </a>
     <a class="nav-link" onclick="showTab('sideeffects', this)">
-      <span class="nav-link-icon">⚠️</span> Side Effects
+      <span class="nav-link-icon-wrap"><i class="nav-link-icon icon" data-lucide="alert-triangle"></i></span> Side Effects
     </a>
     <a class="nav-link" onclick="showTab('history', this)">
-      <span class="nav-link-icon">📊</span> My History
+      <span class="nav-link-icon-wrap"><i class="nav-link-icon icon" data-lucide="bar-chart-3"></i></span> My History
     </a>
     <a class="nav-link" onclick="showTab('access', this)">
-      <span class="nav-link-icon">🔐</span> Doctor Access
+      <span class="nav-link-icon-wrap"><i class="nav-link-icon icon" data-lucide="shield-check"></i></span> Doctor Access
     </a>
   </nav>
   <div class="sidebar-footer">
     <div class="sidebar-theme-toggle" onclick="toggleTheme()">
-      <span id="theme-icon">☀️</span>
+      <i class="icon" id="theme-icon" data-lucide="moon"></i>
       <span id="theme-label">Light mode</span>
     </div>
   </div>
@@ -67,7 +67,7 @@
     <div class="section active" id="tab-overview">
 
       <div class="page-welcome">
-        <h1 id="welcome-name">Good day! 👋</h1>
+        <h1 id="welcome-name">Good day!</h1>
         <p id="welcome-sub">Here's your health summary for today</p>
       </div>
 
@@ -79,7 +79,7 @@
             <div class="stat-value green" id="p-adherence">—</div>
             <div class="stat-sub">Overall performance</div>
           </div>
-          <div class="stat-icon-wrap green">✅</div>
+          <div class="stat-icon-wrap green"><i class="icon" data-lucide="check-circle"></i></div>
         </div>
         <div class="stat-card">
           <div class="stat-card-left">
@@ -87,7 +87,7 @@
             <div class="stat-value blue" id="p-taken">—</div>
             <div class="stat-sub">On time or late</div>
           </div>
-          <div class="stat-icon-wrap blue">💊</div>
+          <div class="stat-icon-wrap blue"><i class="icon" data-lucide="pill"></i></div>
         </div>
         <div class="stat-card">
           <div class="stat-card-left">
@@ -95,7 +95,7 @@
             <div class="stat-value red" id="p-missed">—</div>
             <div class="stat-sub">Not taken at all</div>
           </div>
-          <div class="stat-icon-wrap red">❌</div>
+          <div class="stat-icon-wrap red"><i class="icon" data-lucide="x-circle"></i></div>
         </div>
         <div class="stat-card">
           <div class="stat-card-left">
@@ -103,7 +103,7 @@
             <div class="stat-value yellow" id="p-late">—</div>
             <div class="stat-sub">Taken after schedule</div>
           </div>
-          <div class="stat-icon-wrap yellow">⏰</div>
+          <div class="stat-icon-wrap yellow"><i class="icon" data-lucide="clock"></i></div>
         </div>
       </div>
 
@@ -111,7 +111,7 @@
         <!-- Today's medicines -->
         <div class="card">
           <div class="card-head">
-            <span class="card-title">💊 Today's Medicines</span>
+            <span class="card-title"><i class="icon" data-lucide="pill"></i>Today's Medicines</span>
             <span class="pill green" id="today-count">0</span>
           </div>
           <div id="today-doses"><div class="empty">Loading schedule...</div></div>
@@ -119,14 +119,14 @@
 
         <!-- Adherence chart -->
         <div class="card">
-          <div class="card-head"><span class="card-title">📈 My Adherence Trend</span></div>
+          <div class="card-head"><span class="card-title"><i class="icon" data-lucide="trending-up"></i>My Adherence Trend</span></div>
           <div class="chart-wrap"><canvas id="p-adherence-chart"></canvas></div>
         </div>
       </div>
 
       <!-- Recovery chart -->
       <div class="card">
-        <div class="card-head"><span class="card-title">💚 Recovery vs Symptoms</span></div>
+        <div class="card-head"><span class="card-title"><i class="icon" data-lucide="heart-pulse"></i>Recovery vs Symptoms</span></div>
         <div class="chart-wrap"><canvas id="p-recovery-chart"></canvas></div>
       </div>
 
@@ -135,7 +135,7 @@
     <!-- ══ TAB: MEDICINES ══ -->
     <div class="section" id="tab-medicines">
       <div class="card">
-        <div class="card-head"><span class="card-title">💊 All My Scheduled Medicines</span></div>
+        <div class="card-head"><span class="card-title"><i class="icon" data-lucide="pill"></i>All My Scheduled Medicines</span></div>
         <table class="data-table">
           <thead>
             <tr><th>Medicine</th><th>Brand</th><th>Dose Time</th><th>Frequency</th><th>Type</th></tr>
@@ -145,7 +145,7 @@
       </div>
 
       <div class="card">
-        <div class="card-head"><span class="card-title">📅 Full Dose History</span></div>
+        <div class="card-head"><span class="card-title"><i class="icon" data-lucide="calendar"></i>Full Dose History</span></div>
         <table class="data-table">
           <thead>
             <tr><th>Medicine</th><th>Scheduled</th><th>Taken At</th><th>Status</th></tr>
@@ -158,7 +158,7 @@
     <!-- ══ TAB: RECOVERY LOG ══ -->
     <div class="section" id="tab-recovery">
       <div class="card">
-        <div class="card-head"><span class="card-title">📝 Log Today's Recovery</span></div>
+        <div class="card-head"><span class="card-title"><i class="icon" data-lucide="file-text"></i>Log Today's Recovery</span></div>
 
         <div class="form-group" style="margin-bottom:1.2rem">
           <label class="form-label">How are your symptoms today? (1 = very bad, 10 = no symptoms)</label>
@@ -189,7 +189,7 @@
       </div>
 
       <div class="card">
-        <div class="card-head"><span class="card-title">📋 My Recovery History</span></div>
+        <div class="card-head"><span class="card-title"><i class="icon" data-lucide="clipboard-list"></i>My Recovery History</span></div>
         <table class="data-table">
           <thead><tr><th>Date</th><th>Symptom Score</th><th>Recovery Score</th><th>Notes</th></tr></thead>
           <tbody id="recovery-history"><tr><td colspan="4" class="empty">Loading...</td></tr></tbody>
@@ -200,7 +200,7 @@
     <!-- ══ TAB: PRESCRIPTIONS ══ -->
     <div class="section" id="tab-prescriptions">
       <div class="card">
-        <div class="card-head"><span class="card-title">📋 My Prescriptions</span></div>
+        <div class="card-head"><span class="card-title"><i class="icon" data-lucide="clipboard-list"></i>My Prescriptions</span></div>
         <table class="data-table">
           <thead>
             <tr><th>Doctor</th><th>Start Date</th><th>End Date</th><th>Notes</th><th>Status</th></tr>
@@ -214,7 +214,7 @@
     <div class="section" id="tab-sideeffects">
       <div class="two-col">
         <div class="card">
-          <div class="card-head"><span class="card-title">⚠️ Report a Side Effect</span></div>
+          <div class="card-head"><span class="card-title"><i class="icon" data-lucide="alert-triangle"></i>Report a Side Effect</span></div>
 
           <div class="form-group" style="margin-bottom:1rem">
             <label class="form-label">Medicine</label>
@@ -241,12 +241,12 @@
               placeholder="Any extra details..."></textarea>
           </div>
           <button class="btn btn-primary" style="background:var(--red)"
-            onclick="submitSideEffect()">🚨 Report Side Effect</button>
+            onclick="submitSideEffect()"><i class="icon" data-lucide="siren"></i>Report Side Effect</button>
           <div id="se-msg" style="margin-top:12px"></div>
         </div>
 
         <div class="card">
-          <div class="card-head"><span class="card-title">📋 My Reported Side Effects</span></div>
+          <div class="card-head"><span class="card-title"><i class="icon" data-lucide="clipboard-list"></i>My Reported Side Effects</span></div>
           <table class="data-table">
             <thead><tr><th>Medicine</th><th>Effect</th><th>Severity</th><th>Date</th></tr></thead>
             <tbody id="my-side-effects"><tr><td colspan="4" class="empty">Loading...</td></tr></tbody>
@@ -259,11 +259,11 @@
     <div class="section" id="tab-history">
       <div class="two-col">
         <div class="card">
-          <div class="card-head"><span class="card-title">📊 Dose Status Breakdown</span></div>
+          <div class="card-head"><span class="card-title"><i class="icon" data-lucide="pie-chart"></i>Dose Status Breakdown</span></div>
           <div class="chart-wrap"><canvas id="p-status-chart"></canvas></div>
         </div>
         <div class="card">
-          <div class="card-head"><span class="card-title">📅 My Appointments</span></div>
+          <div class="card-head"><span class="card-title"><i class="icon" data-lucide="calendar"></i>My Appointments</span></div>
           <table class="data-table">
             <thead><tr><th>Doctor</th><th>Date</th><th>Symptoms</th><th>Status</th></tr></thead>
             <tbody id="my-appointments"><tr><td colspan="4" class="empty">Loading...</td></tr></tbody>
@@ -277,7 +277,7 @@
 
       <div class="two-col">
         <div class="card">
-          <div class="card-head"><span class="card-title">📅 Request an Appointment</span></div>
+          <div class="card-head"><span class="card-title"><i class="icon" data-lucide="calendar"></i>Request an Appointment</span></div>
 
           <div class="form-group" style="margin-bottom:1rem">
             <label class="form-label">Doctor</label>
@@ -298,13 +298,13 @@
         </div>
 
         <div class="card">
-          <div class="card-head"><span class="card-title">🔔 Pending Access Requests</span></div>
+          <div class="card-head"><span class="card-title"><i class="icon" data-lucide="bell"></i>Pending Access Requests</span></div>
           <div id="access-pending"><div class="empty">Loading...</div></div>
         </div>
       </div>
 
       <div class="card">
-        <div class="card-head"><span class="card-title">🩺 Doctors With Access To My Record</span></div>
+        <div class="card-head"><span class="card-title"><i class="icon" data-lucide="stethoscope"></i>Doctors With Access To My Record</span></div>
         <table class="data-table">
           <thead><tr><th>Doctor</th><th>Specialization</th><th>Status</th><th>Granted On</th><th></th></tr></thead>
           <tbody id="my-access-grants"><tr><td colspan="5" class="empty">Loading...</td></tr></tbody>
@@ -313,7 +313,7 @@
 
       <div class="two-col">
         <div class="card">
-          <div class="card-head"><span class="card-title">🌿 Report an Allergy</span></div>
+          <div class="card-head"><span class="card-title"><i class="icon" data-lucide="shield-alert"></i>Report an Allergy</span></div>
           <div class="form-group" style="margin-bottom:1rem">
             <label class="form-label">Allergy Name</label>
             <input type="text" id="al-name" class="form-select" placeholder="e.g. Peanuts, Penicillin...">
@@ -327,7 +327,7 @@
         </div>
 
         <div class="card">
-          <div class="card-head"><span class="card-title">📋 My Allergies</span></div>
+          <div class="card-head"><span class="card-title"><i class="icon" data-lucide="clipboard-list"></i>My Allergies</span></div>
           <table class="data-table">
             <thead><tr><th>Allergy</th><th>Status</th><th>Reported By</th></tr></thead>
             <tbody id="my-allergies"><tr><td colspan="3" class="empty">Loading...</td></tr></tbody>
@@ -340,6 +340,8 @@
   </div>
 </div>
 
+<script src="https://unpkg.com/lucide@latest"></script>
+<script src="js/icons.js?v=7"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="js/config.js?v=6"></script>
@@ -364,7 +366,7 @@
 
   // Theme
   (function(){
-    const t = localStorage.getItem('medtrack-theme') || 'dark';
+    const t = localStorage.getItem('medtrack-theme') || 'light';
     document.documentElement.setAttribute('data-theme', t);
     updateThemeLabel(t);
   })();
@@ -376,7 +378,7 @@
     updateThemeLabel(next);
   }
   function updateThemeLabel(t){
-    document.getElementById('theme-icon').textContent  = t==='dark' ? '☀️' : '🌙';
+    document.getElementById('theme-icon').setAttribute('data-lucide', t==='dark' ? 'sun' : 'moon');
     document.getElementById('theme-label').textContent = t==='dark' ? 'Light mode' : 'Dark mode';
   }
 </script>

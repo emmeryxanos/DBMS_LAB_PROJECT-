@@ -10,7 +10,7 @@ async function loadSideEffectAlerts() {
   const data = await api.reportSideEffectAlerts();
 
   if (!data?.length) {
-    tbody.innerHTML = '<tr><td colspan="6" class="empty">No critical side effects reported 🎉</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="6" class="empty"><i class="icon" data-lucide="check-circle"></i>No critical side effects reported</td></tr>';
     return;
   }
 
@@ -33,7 +33,7 @@ async function loadRecoveryConcerns() {
   const data = await api.reportRecoveryConcerns();
 
   if (!data?.length) {
-    el.innerHTML = '<div class="empty">No recovery concerns detected 🎉</div>';
+    el.innerHTML = '<div class="empty"><i class="icon" data-lucide="check-circle"></i>No recovery concerns detected</div>';
     return;
   }
 
@@ -79,7 +79,7 @@ async function loadPerfectAdherence() {
   }
 
   el.innerHTML = data.map(p => `<div class="dose-row">
-    <div style="font-size:13px;font-weight:500">✅ ${p.full_name}</div>
+    <div style="font-size:13px;font-weight:500;display:flex;align-items:center;gap:7px"><i class="icon icon-sm" data-lucide="check-circle" style="color:var(--green)"></i>${p.full_name}</div>
   </div>`).join('');
 }
 
@@ -95,7 +95,7 @@ async function loadDiseaseChart() {
       labels: data.map(d => d.disease_name),
       datasets: [{
         data: data.map(d => d.count),
-        backgroundColor: ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899', '#14b8a6', '#f97316'],
+        backgroundColor: ['#5c8de8', '#3fa987', '#c99435', '#e1637a', '#9b7fd4', '#d98249', '#6e62e5', '#4fb8c7'],
         borderWidth: 0,
       }]
     },

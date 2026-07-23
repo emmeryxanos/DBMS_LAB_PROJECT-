@@ -27,7 +27,7 @@ async function loadAlerts() {
   if (!el) return;
 
   if (!data?.length) {
-    el.innerHTML = '<div class="empty">No active alerts 🎉</div>';
+    el.innerHTML = '<div class="empty"><i class="icon" data-lucide="check-circle"></i>No active alerts</div>';
     return;
   }
 
@@ -114,8 +114,8 @@ async function loadPatients(search = '') {
         riskCell = '<span style="color:var(--muted);font-size:12px">—</span>';
       }
     } else {
-      adhCell  = '<span style="color:var(--muted);font-size:12px">🔒 Locked</span>';
-      riskCell = '<span style="color:var(--muted);font-size:12px">🔒 Locked</span>';
+      adhCell  = '<span style="color:var(--muted);font-size:12px;display:inline-flex;align-items:center;gap:4px"><i class="icon icon-sm" data-lucide="lock"></i>Locked</span>';
+      riskCell = '<span style="color:var(--muted);font-size:12px;display:inline-flex;align-items:center;gap:4px"><i class="icon icon-sm" data-lucide="lock"></i>Locked</span>';
     }
 
     return `<tr>

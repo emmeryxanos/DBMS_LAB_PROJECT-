@@ -161,22 +161,22 @@ async function renderRxWarnings() {
 
 function renderWarningsPanel(el, interactions, allergies) {
   if (!interactions.length && !allergies.length) {
-    el.innerHTML = `<div class="result-safe"><div class="result-title">✅ No known interactions or allergy conflicts</div></div>`;
+    el.innerHTML = `<div class="result-safe"><div class="result-title"><i class="icon" data-lucide="check-circle"></i>No known interactions or allergy conflicts</div></div>`;
     return;
   }
 
   const sevClass = s => s === 'severe' ? 'result-danger' : s === 'moderate' ? 'result-warning' : 'result-safe';
-  const sevIcon  = s => s === 'severe' ? '🚨' : s === 'moderate' ? '⚠️' : 'ℹ️';
+  const sevIcon  = s => s === 'severe' ? 'siren' : s === 'moderate' ? 'alert-triangle' : 'info';
 
   const interactionHtml = interactions.map(i => `
     <div class="${sevClass(i.severity)}">
-      <div class="result-title">${sevIcon(i.severity)} ${i.severity.toUpperCase()} Drug Interaction</div>
+      <div class="result-title"><i class="icon" data-lucide="${sevIcon(i.severity)}"></i>${i.severity.toUpperCase()} Drug Interaction</div>
       <div class="result-msg">${i.warning_message}</div>
     </div>`).join('');
 
   const allergyHtml = allergies.map(a => `
     <div class="${sevClass(a.severity)}">
-      <div class="result-title">🚨 Allergy Conflict — ${a.severity.toUpperCase()}</div>
+      <div class="result-title"><i class="icon" data-lucide="siren"></i>Allergy Conflict — ${a.severity.toUpperCase()}</div>
       <div class="result-msg">Patient is allergic to <strong>${a.allergy?.allergy_name ?? '—'}</strong>. Reaction: ${a.reaction}</div>
     </div>`).join('');
 
@@ -238,7 +238,7 @@ async function loadRxPrescriptionsForPatient(patientId) {
   try {
     data = await api.prescriptions(patientId);
   } catch (ex) {
-    tbody.innerHTML = `<tr><td colspan="4" class="empty">🔒 You don't have record access for this patient yet. Request access from the Patients tab.</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="4" class="empty"><i class="icon" data-lucide="lock"></i>You don't have record access for this patient yet. Request access from the Patients tab.</td></tr>`;
     return;
   }
 

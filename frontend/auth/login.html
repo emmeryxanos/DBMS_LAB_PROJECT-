@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,54 +10,53 @@
 </head>
 <body>
 
-<button class="theme-toggle" onclick="toggleTheme()">
-  <span class="theme-icon" id="theme-icon">☀️</span>
-</button>
-
-<!-- LEFT -->
-<div class="auth-left">
-  <div class="left-top">
-    <div class="left-logo-row">
-      <span class="left-logo">⚕️</span>
-      <span class="left-brand">MedTrack</span>
-    </div>
-    <div class="left-headline">Smart clinical<br>care starts here.</div>
-    <div class="left-sub">A complete medication adherence and recovery tracking system for doctors and patients.</div>
-  </div>
-  <div class="left-bottom">
-    <div class="left-features">
-      <div class="left-feature">
-        <span class="left-feature-icon">🩺</span>
-        <span class="left-feature-text">Doctor dashboard with full patient overview</span>
-      </div>
-      <div class="left-feature">
-        <span class="left-feature-icon">💊</span>
-        <span class="left-feature-text">Real-time medication adherence tracking</span>
-      </div>
-      <div class="left-feature">
-        <span class="left-feature-icon">📊</span>
-        <span class="left-feature-text">Recovery analytics and trend reports</span>
-      </div>
-      <div class="left-feature">
-        <span class="left-feature-icon">🛡️</span>
-        <span class="left-feature-text">Drug interaction & allergy warnings</span>
-      </div>
-    </div>
-  </div>
+<div class="mesh-bg" aria-hidden="true">
+  <span class="mesh-blob blob-a"></span>
+  <span class="mesh-blob blob-b"></span>
+  <span class="mesh-blob blob-c"></span>
 </div>
 
-<!-- RIGHT -->
-<div class="auth-right">
-  <div class="auth-container">
-    <div class="auth-card">
-      <div class="auth-title">Welcome back 👋</div>
+<button class="theme-toggle" onclick="toggleTheme()">
+  <i class="theme-icon icon" id="theme-icon" data-lucide="moon"></i>
+</button>
+
+<div class="auth-center">
+  <div class="auth-card">
+
+    <div class="auth-card-intro">
+      <div class="auth-brand">
+        <i class="auth-brand-icon icon" data-lucide="stethoscope"></i>
+        <span class="auth-brand-name">MedTrack</span>
+      </div>
+      <div class="auth-title">Welcome back</div>
       <div class="auth-subtitle">Sign in to your MedTrack account to continue</div>
 
+      <div class="auth-features">
+        <div class="auth-feature">
+          <i class="auth-feature-icon icon" data-lucide="stethoscope"></i>
+          <span class="auth-feature-text">Doctor dashboard with full patient overview</span>
+        </div>
+        <div class="auth-feature">
+          <i class="auth-feature-icon icon" data-lucide="pill"></i>
+          <span class="auth-feature-text">Real-time medication adherence tracking</span>
+        </div>
+        <div class="auth-feature">
+          <i class="auth-feature-icon icon" data-lucide="trending-up"></i>
+          <span class="auth-feature-text">Recovery analytics and trend reports</span>
+        </div>
+        <div class="auth-feature">
+          <i class="auth-feature-icon icon" data-lucide="shield-check"></i>
+          <span class="auth-feature-text">Drug interaction & allergy warnings</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="auth-card-form">
       <div class="alert alert-error" id="alert-error">
-        <span>⚠️</span><span id="alert-error-msg">Invalid email or password.</span>
+        <i class="icon" data-lucide="alert-circle"></i><span id="alert-error-msg">Invalid email or password.</span>
       </div>
       <div class="alert alert-success" id="alert-success">
-        <span>✅</span><span id="alert-success-msg">Login successful! Redirecting...</span>
+        <i class="icon" data-lucide="check-circle"></i><span id="alert-success-msg">Login successful! Redirecting...</span>
       </div>
 
       <div class="form-group">
@@ -66,13 +65,13 @@
           <div>
             <input type="radio" name="login-role" id="login-role-patient" value="patient" class="role-option" checked>
             <label for="login-role-patient" class="role-label">
-              <span class="role-icon">🧑‍🦽</span>Patient
+              <i class="role-icon icon" data-lucide="user"></i>Patient
             </label>
           </div>
           <div>
             <input type="radio" name="login-role" id="login-role-doctor" value="doctor" class="role-option">
             <label for="login-role-doctor" class="role-label">
-              <span class="role-icon">👨‍⚕️</span>Doctor
+              <i class="role-icon icon" data-lucide="stethoscope"></i>Doctor
             </label>
           </div>
         </div>
@@ -89,23 +88,26 @@
         <div class="input-wrap">
           <input type="password" id="password" class="form-input"
             placeholder="Enter your password" autocomplete="current-password">
-          <button class="toggle-pw" onclick="togglePw('password',this)" type="button">👁</button>
+          <button class="toggle-pw" onclick="togglePw('password',this)" type="button"><i class="icon" data-lucide="eye"></i></button>
         </div>
       </div>
 
       <a href="forgot.html" class="forgot-link">Forgot your password?</a>
 
       <button class="btn-submit" id="login-btn" onclick="handleLogin()">
-        <span id="login-btn-text">Sign In →</span>
+        <span id="login-btn-text">Sign In</span><i class="icon btn-submit-arrow" data-lucide="arrow-right"></i>
       </button>
     </div>
 
-    <div class="auth-footer">
-      Don't have an account? <a href="register.html">Create one free</a>
-    </div>
+  </div>
+
+  <div class="auth-footer">
+    Don't have an account? <a href="register.html">Create one free</a>
   </div>
 </div>
 
+<script src="https://unpkg.com/lucide@latest"></script>
+<script src="../js/icons.js?v=7"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="../js/config.js?v=6"></script>
 <script src="../js/supabase.js?v=6"></script>
@@ -113,7 +115,7 @@
 <script src="../js/auth.js?v=6"></script>
 <script>
   (function(){
-    const saved = localStorage.getItem('medtrack-theme') || 'dark';
+    const saved = localStorage.getItem('medtrack-theme') || 'light';
     document.documentElement.setAttribute('data-theme', saved);
     updateThemeBtn(saved);
   })();
@@ -125,7 +127,7 @@
     updateThemeBtn(next);
   }
   function updateThemeBtn(t){
-    document.getElementById('theme-icon').textContent  = t==='dark' ? '☀️' : '🌙';
+    document.getElementById('theme-icon').setAttribute('data-lucide', t==='dark' ? 'sun' : 'moon');
   }
 </script>
 </body>

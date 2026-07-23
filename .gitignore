@@ -1,4 +1,9 @@
-echo "node_modules/
+node_modules/
 .env
 .DS_Store
-*.log" > .gitignore
+*.log
+
+# Python
+backend/.venv/
+__pycache__/
+*.pyc

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,54 +10,53 @@
 </head>
 <body>
 
-<button class="theme-toggle" onclick="toggleTheme()">
-  <span class="theme-icon" id="theme-icon">☀️</span>
-</button>
-
-<!-- LEFT -->
-<div class="auth-left">
-  <div class="left-top">
-    <div class="left-logo-row">
-      <span class="left-logo">⚕️</span>
-      <span class="left-brand">MedTrack</span>
-    </div>
-    <div class="left-headline">Forgot your<br>password?</div>
-    <div class="left-sub">No worries — it happens to everyone. Enter your email and we'll send you a secure reset link instantly.</div>
-  </div>
-  <div class="left-bottom">
-    <div class="left-features">
-      <div class="left-feature">
-        <span class="left-feature-icon">📧</span>
-        <span class="left-feature-text">Reset link sent to your email instantly</span>
-      </div>
-      <div class="left-feature">
-        <span class="left-feature-icon">🔒</span>
-        <span class="left-feature-text">End-to-end encrypted reset process</span>
-      </div>
-      <div class="left-feature">
-        <span class="left-feature-icon">⚡</span>
-        <span class="left-feature-text">Back to your dashboard in minutes</span>
-      </div>
-      <div class="left-feature">
-        <span class="left-feature-icon">🛡️</span>
-        <span class="left-feature-text">Your data stays protected at all times</span>
-      </div>
-    </div>
-  </div>
+<div class="mesh-bg" aria-hidden="true">
+  <span class="mesh-blob blob-a"></span>
+  <span class="mesh-blob blob-b"></span>
+  <span class="mesh-blob blob-c"></span>
 </div>
 
-<!-- RIGHT -->
-<div class="auth-right">
-  <div class="auth-container">
-    <div class="auth-card">
-      <div class="auth-title">Reset your password 🔑</div>
-      <div class="auth-subtitle">Enter your registered email and we'll send you a secure link to reset your password</div>
+<button class="theme-toggle" onclick="toggleTheme()">
+  <i class="theme-icon icon" id="theme-icon" data-lucide="moon"></i>
+</button>
 
+<div class="auth-center">
+  <div class="auth-card">
+
+    <div class="auth-card-intro">
+      <div class="auth-brand">
+        <i class="auth-brand-icon icon" data-lucide="stethoscope"></i>
+        <span class="auth-brand-name">MedTrack</span>
+      </div>
+      <div class="auth-title">Forgot your password?</div>
+      <div class="auth-subtitle">No worries — it happens to everyone. Enter your email and we'll send you a secure reset link instantly.</div>
+
+      <div class="auth-features">
+        <div class="auth-feature">
+          <i class="auth-feature-icon icon" data-lucide="mail"></i>
+          <span class="auth-feature-text">Reset link sent to your email instantly</span>
+        </div>
+        <div class="auth-feature">
+          <i class="auth-feature-icon icon" data-lucide="lock"></i>
+          <span class="auth-feature-text">End-to-end encrypted reset process</span>
+        </div>
+        <div class="auth-feature">
+          <i class="auth-feature-icon icon" data-lucide="zap"></i>
+          <span class="auth-feature-text">Back to your dashboard in minutes</span>
+        </div>
+        <div class="auth-feature">
+          <i class="auth-feature-icon icon" data-lucide="shield-check"></i>
+          <span class="auth-feature-text">Your data stays protected at all times</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="auth-card-form">
       <div class="alert alert-error" id="alert-error">
-        <span>⚠️</span><span id="alert-error-msg">Something went wrong.</span>
+        <i class="icon" data-lucide="alert-circle"></i><span id="alert-error-msg">Something went wrong.</span>
       </div>
       <div class="alert alert-success" id="alert-success">
-        <span>✅</span><span id="alert-success-msg">Reset link sent! Check your inbox and spam folder.</span>
+        <i class="icon" data-lucide="check-circle"></i><span id="alert-success-msg">Reset link sent! Check your inbox and spam folder.</span>
       </div>
 
       <div class="form-group">
@@ -67,23 +66,26 @@
       </div>
 
       <button class="btn-submit" id="reset-btn" onclick="handleReset()">
-        <span id="reset-btn-text">Send Reset Link →</span>
+        <span id="reset-btn-text">Send Reset Link</span><i class="icon btn-submit-arrow" data-lucide="arrow-right"></i>
       </button>
     </div>
 
-    <div class="auth-footer">
-      Remember your password? <a href="login.html">Back to Sign In</a>
-    </div>
+  </div>
+
+  <div class="auth-footer">
+    Remember your password? <a href="login.html">Back to Sign In</a>
   </div>
 </div>
 
+<script src="https://unpkg.com/lucide@latest"></script>
+<script src="../js/icons.js?v=7"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="../js/config.js?v=6"></script>
 <script src="../js/supabase.js?v=6"></script>
 <script src="../js/auth.js?v=6"></script>
 <script>
   (function(){
-    const saved = localStorage.getItem('medtrack-theme') || 'dark';
+    const saved = localStorage.getItem('medtrack-theme') || 'light';
     document.documentElement.setAttribute('data-theme', saved);
     updateThemeBtn(saved);
   })();
@@ -95,7 +97,7 @@
     updateThemeBtn(next);
   }
   function updateThemeBtn(t){
-    document.getElementById('theme-icon').textContent  = t==='dark' ? '☀️' : '🌙';
+    document.getElementById('theme-icon').setAttribute('data-lucide', t==='dark' ? 'sun' : 'moon');
   }
 </script>
 </body>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,48 +13,48 @@
 <!-- ══════════════════════ SIDEBAR ══════════════════════ -->
 <aside class="sidebar">
   <div class="sidebar-brand">
-    <span class="brand-icon">⚕️</span>
+    <i class="brand-icon icon" data-lucide="stethoscope"></i>
     <span class="brand-name">MedTrack</span>
   </div>
   <nav class="sidebar-nav">
     <p class="nav-group-label">Overview</p>
     <a class="nav-link active" onclick="showSection('overview',this)">
-      <span class="nav-link-icon">◈</span> Dashboard
+      <span class="nav-link-icon-wrap"><i class="nav-link-icon icon" data-lucide="layout-dashboard"></i></span> Dashboard
     </a>
     <a class="nav-link" onclick="showSection('patients',this)">
-      <span class="nav-link-icon">👥</span> Patients
+      <span class="nav-link-icon-wrap"><i class="nav-link-icon icon" data-lucide="users"></i></span> Patients
     </a>
     <p class="nav-group-label">Clinical</p>
     <a class="nav-link" onclick="showSection('prescriptions',this)">
-      <span class="nav-link-icon">📝</span> Prescriptions
+      <span class="nav-link-icon-wrap"><i class="nav-link-icon icon" data-lucide="file-text"></i></span> Prescriptions
     </a>
     <a class="nav-link" onclick="showSection('appointments',this)">
-      <span class="nav-link-icon">📅</span> Appointment Requests
+      <span class="nav-link-icon-wrap"><i class="nav-link-icon icon" data-lucide="calendar"></i></span> Appointment Requests
     </a>
     <a class="nav-link" onclick="showSection('interactions',this)">
-      <span class="nav-link-icon">⚠️</span> Drug Interactions
+      <span class="nav-link-icon-wrap"><i class="nav-link-icon icon" data-lucide="shuffle"></i></span> Drug Interactions
     </a>
     <a class="nav-link" onclick="showSection('allergies',this)">
-      <span class="nav-link-icon">🛡️</span> Allergy Conflicts
+      <span class="nav-link-icon-wrap"><i class="nav-link-icon icon" data-lucide="shield-alert"></i></span> Allergy Conflicts
     </a>
     <a class="nav-link" onclick="showSection('risk',this)">
-      <span class="nav-link-icon">📊</span> Risk Scores
+      <span class="nav-link-icon-wrap"><i class="nav-link-icon icon" data-lucide="bar-chart-3"></i></span> Risk Scores
     </a>
     <p class="nav-group-label">Operations</p>
     <a class="nav-link" onclick="showSection('pharmacy',this)">
-      <span class="nav-link-icon">💊</span> Pharmacy Stock
+      <span class="nav-link-icon-wrap"><i class="nav-link-icon icon" data-lucide="package"></i></span> Pharmacy Stock
     </a>
     <a class="nav-link" onclick="showSection('reports',this)">
-      <span class="nav-link-icon">📈</span> Reports
+      <span class="nav-link-icon-wrap"><i class="nav-link-icon icon" data-lucide="trending-up"></i></span> Reports
     </a>
     <a class="nav-link" onclick="showSection('audit',this)">
-      <span class="nav-link-icon">🗒️</span> Audit Log
+      <span class="nav-link-icon-wrap"><i class="nav-link-icon icon" data-lucide="history"></i></span> Audit Log
     </a>
     <p class="nav-group-label">Portal</p>
   </nav>
   <div class="sidebar-footer">
     <div class="sidebar-theme-toggle" onclick="toggleTheme()">
-      <span id="theme-icon">☀️</span>
+      <i class="icon" id="theme-icon" data-lucide="moon"></i>
       <span id="theme-label">Light mode</span>
     </div>
   </div>
@@ -89,7 +89,7 @@
             <div class="stat-value blue" id="s-patients">—</div>
             <div class="stat-sub">Registered in system</div>
           </div>
-          <div class="stat-icon-wrap blue">👥</div>
+          <div class="stat-icon-wrap blue"><i class="icon" data-lucide="users"></i></div>
         </div>
         <div class="stat-card">
           <div class="stat-card-left">
@@ -97,7 +97,7 @@
             <div class="stat-value red" id="s-alerts">—</div>
             <div class="stat-sub">Unresolved notifications</div>
           </div>
-          <div class="stat-icon-wrap red">🔔</div>
+          <div class="stat-icon-wrap red"><i class="icon" data-lucide="bell"></i></div>
         </div>
         <div class="stat-card">
           <div class="stat-card-left">
@@ -105,7 +105,7 @@
             <div class="stat-value green" id="s-adherence">—</div>
             <div class="stat-sub">Across all patients</div>
           </div>
-          <div class="stat-icon-wrap green">✅</div>
+          <div class="stat-icon-wrap green"><i class="icon" data-lucide="check-circle"></i></div>
         </div>
         <div class="stat-card">
           <div class="stat-card-left">
@@ -113,7 +113,7 @@
             <div class="stat-value yellow" id="s-rx">—</div>
             <div class="stat-sub">Currently ongoing</div>
           </div>
-          <div class="stat-icon-wrap yellow">📋</div>
+          <div class="stat-icon-wrap yellow"><i class="icon" data-lucide="clipboard-list"></i></div>
         </div>
         <div class="stat-card">
           <div class="stat-card-left">
@@ -121,7 +121,7 @@
             <div class="stat-value purple" id="s-meds">—</div>
             <div class="stat-sub">In medicine catalog</div>
           </div>
-          <div class="stat-icon-wrap purple">💊</div>
+          <div class="stat-icon-wrap purple"><i class="icon" data-lucide="pill"></i></div>
         </div>
         <div class="stat-card">
           <div class="stat-card-left">
@@ -129,21 +129,21 @@
             <div class="stat-value orange" id="s-interactions">—</div>
             <div class="stat-sub">Known combinations</div>
           </div>
-          <div class="stat-icon-wrap orange">⚠️</div>
+          <div class="stat-icon-wrap orange"><i class="icon" data-lucide="alert-triangle"></i></div>
         </div>
       </div>
 
       <div class="dash-grid">
         <div class="card span-1">
           <div class="card-head">
-            <span class="card-title">🔔 Active Alerts</span>
+            <span class="card-title"><i class="icon" data-lucide="bell"></i>Active Alerts</span>
             <span class="pill red" id="alerts-count-badge">0</span>
           </div>
           <div id="alerts-list"><div class="skeleton-list"></div><div class="skeleton-list"></div><div class="skeleton-list"></div></div>
         </div>
 
         <div class="card span-1">
-          <div class="card-head"><span class="card-title">💊 Recent Dose Activity</span></div>
+          <div class="card-head"><span class="card-title"><i class="icon" data-lucide="pill"></i>Recent Dose Activity</span></div>
           <table class="data-table">
             <thead><tr><th>Patient</th><th>Medicine</th><th>Status</th></tr></thead>
             <tbody id="recent-doses"><tr><td colspan="3"><div class="skeleton-list"></div></td></tr></tbody>
@@ -151,17 +151,17 @@
         </div>
 
         <div class="card span-1">
-          <div class="card-head"><span class="card-title">📊 Dose Breakdown</span></div>
+          <div class="card-head"><span class="card-title"><i class="icon" data-lucide="pie-chart"></i>Dose Breakdown</span></div>
           <div class="chart-wrap"><canvas id="chart-dose-status"></canvas></div>
         </div>
 
         <div class="card span-2">
-          <div class="card-head"><span class="card-title">📈 Adherence Trend</span></div>
+          <div class="card-head"><span class="card-title"><i class="icon" data-lucide="trending-up"></i>Adherence Trend</span></div>
           <div class="chart-wrap"><canvas id="chart-adherence-trend"></canvas></div>
         </div>
 
         <div class="card span-1">
-          <div class="card-head"><span class="card-title">🏆 Top Medicines</span></div>
+          <div class="card-head"><span class="card-title"><i class="icon" data-lucide="award"></i>Top Medicines</span></div>
           <table class="data-table">
             <thead><tr><th>#</th><th>Medicine</th><th>Count</th></tr></thead>
             <tbody id="overview-top-meds"><tr><td colspan="3"><div class="skeleton-list"></div></td></tr></tbody>
@@ -174,10 +174,10 @@
     <div class="section" id="section-patients">
       <div class="card">
         <div class="card-head">
-          <span class="card-title">👥 All Patients</span>
+          <span class="card-title"><i class="icon" data-lucide="users"></i>All Patients</span>
           <div style="display:flex;gap:10px;align-items:center">
             <input class="search-box" type="text" placeholder="Search by name..." id="patient-search" oninput="searchPatients(this.value)">
-            <button class="btn btn-primary btn-sm" onclick="openPatientModal()">+ Add Patient</button>
+            <button class="btn btn-primary btn-sm" onclick="openPatientModal()"><i class="icon icon-sm" data-lucide="plus"></i>Add Patient</button>
           </div>
         </div>
         <table class="data-table">
@@ -239,7 +239,7 @@
     <!-- ══ PRESCRIPTIONS ══ -->
     <div class="section" id="section-prescriptions">
       <div class="card">
-        <div class="card-head"><span class="card-title">📝 New Prescription</span></div>
+        <div class="card-head"><span class="card-title"><i class="icon" data-lucide="file-text"></i>New Prescription</span></div>
         <p class="card-desc">Interaction and allergy warnings are shown automatically as you add medicines. Warnings never block submission.</p>
 
         <div class="checker-row">
@@ -251,7 +251,7 @@
             <label class="form-label">Appointment</label>
             <select id="rx-appointment" class="form-select"><option value="">Select appointment...</option></select>
           </div>
-          <button type="button" class="btn btn-ghost" onclick="toggleNewAppointmentForm()">+ New Appointment</button>
+          <button type="button" class="btn btn-ghost" onclick="toggleNewAppointmentForm()"><i class="icon icon-sm" data-lucide="plus"></i>New Appointment</button>
         </div>
 
         <div id="rx-new-appointment" class="checker-row" style="display:none">
@@ -282,8 +282,8 @@
         </div>
 
         <div class="card-head" style="margin-top:18px">
-          <span class="card-title">💊 Medicines</span>
-          <button type="button" class="btn btn-ghost btn-sm" onclick="addRxMedicineRow()">+ Add Medicine</button>
+          <span class="card-title"><i class="icon" data-lucide="pill"></i>Medicines</span>
+          <button type="button" class="btn btn-ghost btn-sm" onclick="addRxMedicineRow()"><i class="icon icon-sm" data-lucide="plus"></i>Add Medicine</button>
         </div>
         <div id="rx-medicine-rows"></div>
 
@@ -296,7 +296,7 @@
       </div>
 
       <div class="card">
-        <div class="card-head"><span class="card-title">📋 Prescriptions For Selected Patient</span></div>
+        <div class="card-head"><span class="card-title"><i class="icon" data-lucide="clipboard-list"></i>Prescriptions For Selected Patient</span></div>
         <table class="data-table">
           <thead><tr><th>Doctor</th><th>Dates</th><th>Medicines</th><th>Status</th></tr></thead>
           <tbody id="rx-list"><tr><td colspan="4" class="empty">Select a patient to view prescriptions</td></tr></tbody>
@@ -307,7 +307,7 @@
     <!-- ══ DRUG INTERACTIONS ══ -->
     <div class="section" id="section-appointments">
       <div class="card">
-        <div class="card-head"><span class="card-title">🔔 Incoming Appointment Requests</span></div>
+        <div class="card-head"><span class="card-title"><i class="icon" data-lucide="bell"></i>Incoming Appointment Requests</span></div>
         <table class="data-table">
           <thead><tr><th>Patient</th><th>Requested Date/Time</th><th>Symptoms</th><th>Actions</th></tr></thead>
           <tbody id="appt-requests"><tr><td colspan="4" class="empty">Loading...</td></tr></tbody>
@@ -315,7 +315,7 @@
       </div>
 
       <div class="card">
-        <div class="card-head"><span class="card-title">📅 My Upcoming Appointments</span></div>
+        <div class="card-head"><span class="card-title"><i class="icon" data-lucide="calendar"></i>My Upcoming Appointments</span></div>
         <table class="data-table">
           <thead><tr><th>Patient</th><th>Date/Time</th><th>Symptoms</th><th>Status</th><th>Actions</th></tr></thead>
           <tbody id="appt-scheduled"><tr><td colspan="5" class="empty">Loading...</td></tr></tbody>
@@ -325,8 +325,8 @@
 
     <div class="section" id="section-interactions">
       <div class="card">
-        <div class="card-head"><span class="card-title">⚠️ Drug Interaction Checker</span></div>
-        <p class="card-desc">⚠️ For academic demonstration only. Always consult a licensed pharmacist before prescribing.</p>
+        <div class="card-head"><span class="card-title"><i class="icon" data-lucide="shuffle"></i>Drug Interaction Checker</span></div>
+        <p class="card-desc">For academic demonstration only. Always consult a licensed pharmacist before prescribing.</p>
         <div class="checker-row">
           <div class="form-group">
             <label class="form-label">Medicine 1</label>
@@ -342,7 +342,7 @@
         <div id="interaction-result" style="margin-top:1rem"></div>
       </div>
       <div class="card">
-        <div class="card-head"><span class="card-title">📋 All Known Interactions</span></div>
+        <div class="card-head"><span class="card-title"><i class="icon" data-lucide="clipboard-list"></i>All Known Interactions</span></div>
         <table class="data-table">
           <thead><tr><th>Medicine 1</th><th>Medicine 2</th><th>Severity</th><th>Warning</th></tr></thead>
           <tbody id="interactions-list"><tr><td colspan="4"><div class="skeleton-list"></div></td></tr></tbody>
@@ -353,7 +353,7 @@
     <!-- ══ ALLERGIES ══ -->
     <div class="section" id="section-allergies">
       <div class="card">
-        <div class="card-head"><span class="card-title">🛡️ Allergy Conflict Checker</span></div>
+        <div class="card-head"><span class="card-title"><i class="icon" data-lucide="shield-alert"></i>Allergy Conflict Checker</span></div>
         <p class="card-desc">Check if a medicine is safe to prescribe for a specific patient based on their allergy records.</p>
         <div class="checker-row">
           <div class="form-group">
@@ -370,7 +370,7 @@
         <div id="allergy-result" style="margin-top:1rem"></div>
       </div>
       <div class="card">
-        <div class="card-head"><span class="card-title">➕ Add Allergy to Patient</span></div>
+        <div class="card-head"><span class="card-title"><i class="icon" data-lucide="plus"></i>Add Allergy to Patient</span></div>
         <div class="checker-row">
           <div class="form-group">
             <label class="form-label">Patient</label>
@@ -389,7 +389,7 @@
         <div id="add-allergy-error" class="modal-error"></div>
       </div>
       <div class="card">
-        <div class="card-head"><span class="card-title">🔔 Pending Allergy Reports</span></div>
+        <div class="card-head"><span class="card-title"><i class="icon" data-lucide="bell"></i>Pending Allergy Reports</span></div>
         <p class="card-desc">Self-reported by patients — confirm or reject before they're treated as clinical fact.</p>
         <table class="data-table">
           <thead><tr><th>Patient</th><th>Allergy</th><th>Reported</th><th>Actions</th></tr></thead>
@@ -397,7 +397,7 @@
         </table>
       </div>
       <div class="card">
-        <div class="card-head"><span class="card-title">📋 Patient Allergy Records</span></div>
+        <div class="card-head"><span class="card-title"><i class="icon" data-lucide="clipboard-list"></i>Patient Allergy Records</span></div>
         <table class="data-table">
           <thead><tr><th>Patient</th><th>Allergy</th><th>Status</th><th>Noted Date</th><th>Actions</th></tr></thead>
           <tbody id="allergy-list"><tr><td colspan="5"><div class="skeleton-list"></div></td></tr></tbody>
@@ -408,7 +408,7 @@
     <!-- ══ RISK ══ -->
     <div class="section" id="section-risk">
       <div class="card">
-        <div class="card-head"><span class="card-title">📊 Patient Risk Classification</span></div>
+        <div class="card-head"><span class="card-title"><i class="icon" data-lucide="bar-chart-3"></i>Patient Risk Classification</span></div>
         <p class="card-desc">Patients auto-classified by adherence rate and missed dose frequency.</p>
         <table class="data-table">
           <thead><tr><th>Patient</th><th>Adherence</th><th>Taken</th><th>Missed</th><th>Late</th><th>Risk Level</th></tr></thead>
@@ -416,7 +416,7 @@
         </table>
       </div>
       <div class="card">
-        <div class="card-head"><span class="card-title">💚 Recovery vs Adherence Correlation</span></div>
+        <div class="card-head"><span class="card-title"><i class="icon" data-lucide="heart-pulse"></i>Recovery vs Adherence Correlation</span></div>
         <p class="card-desc">Does taking medicine on time actually lead to faster recovery?</p>
         <div class="chart-wrap"><canvas id="chart-correlation"></canvas></div>
       </div>
@@ -427,7 +427,7 @@
       <div class="two-col">
         <div class="card">
           <div class="card-head">
-            <span class="card-title">⚠️ Low Stock Alerts</span>
+            <span class="card-title"><i class="icon" data-lucide="alert-triangle"></i>Low Stock Alerts</span>
             <span class="pill red" id="low-stock-count">0</span>
           </div>
           <table class="data-table">
@@ -436,7 +436,7 @@
           </table>
         </div>
         <div class="card">
-          <div class="card-head"><span class="card-title">🏆 Most Prescribed Medicines</span></div>
+          <div class="card-head"><span class="card-title"><i class="icon" data-lucide="award"></i>Most Prescribed Medicines</span></div>
           <table class="data-table">
             <thead><tr><th>Rank</th><th>Medicine</th><th>Brand</th><th>Count</th></tr></thead>
             <tbody id="top-medicines"><tr><td colspan="4"><div class="skeleton-list"></div></td></tr></tbody>
@@ -444,7 +444,7 @@
         </div>
       </div>
       <div class="card">
-        <div class="card-head"><span class="card-title">📦 Full Pharmacy Inventory</span></div>
+        <div class="card-head"><span class="card-title"><i class="icon" data-lucide="package"></i>Full Pharmacy Inventory</span></div>
         <table class="data-table">
           <thead><tr><th>Medicine</th><th>Brand</th><th>Type</th><th>Stock</th><th>Expiry</th><th>Status</th></tr></thead>
           <tbody id="full-inventory"><tr><td colspan="6"><div class="skeleton-list"></div></td></tr></tbody>
@@ -456,7 +456,7 @@
     <div class="section" id="section-reports">
       <div class="card">
         <div class="card-head">
-          <span class="card-title">🚨 Critical Side Effect Alerts</span>
+          <span class="card-title"><i class="icon" data-lucide="siren"></i>Critical Side Effect Alerts</span>
         </div>
         <p class="card-desc">Medium/high severity reports straight from patient-submitted SideEffectReport records.</p>
         <table class="data-table">
@@ -466,13 +466,13 @@
       </div>
 
       <div class="card">
-        <div class="card-head"><span class="card-title">📉 Recovery Concerns</span></div>
+        <div class="card-head"><span class="card-title"><i class="icon" data-lucide="trending-down"></i>Recovery Concerns</span></div>
         <p class="card-desc">Auto-detected from recent Recovery Log trends — rising symptom scores or declining recovery scores.</p>
         <div id="recovery-concerns-list"><div class="skeleton-list"></div></div>
       </div>
 
       <div class="card">
-        <div class="card-head"><span class="card-title">📈 Rolling 7-Day Adherence</span></div>
+        <div class="card-head"><span class="card-title"><i class="icon" data-lucide="trending-up"></i>Rolling 7-Day Adherence</span></div>
         <p class="card-desc">SQL Window Function — 7-day rolling average adherence per patient</p>
         <table class="data-table">
           <thead><tr><th>Patient</th><th>Date</th><th>Daily %</th><th>7-Day Avg</th></tr></thead>
@@ -481,12 +481,12 @@
       </div>
       <div class="two-col">
         <div class="card">
-          <div class="card-head"><span class="card-title">✅ Perfect Adherence Patients</span></div>
+          <div class="card-head"><span class="card-title"><i class="icon" data-lucide="check-circle"></i>Perfect Adherence Patients</span></div>
           <p class="card-desc">SQL NOT EXISTS — patients who never missed a dose</p>
           <div id="perfect-list"><div class="skeleton-list"></div></div>
         </div>
         <div class="card">
-          <div class="card-head"><span class="card-title">📊 Disease Distribution</span></div>
+          <div class="card-head"><span class="card-title"><i class="icon" data-lucide="pie-chart"></i>Disease Distribution</span></div>
           <div class="chart-wrap"><canvas id="chart-disease"></canvas></div>
         </div>
       </div>
@@ -495,7 +495,7 @@
     <!-- ══ AUDIT ══ -->
     <div class="section" id="section-audit">
       <div class="card">
-        <div class="card-head"><span class="card-title">🗒️ Prescription Audit Trail</span></div>
+        <div class="card-head"><span class="card-title"><i class="icon" data-lucide="history"></i>Prescription Audit Trail</span></div>
         <p class="card-desc">Every change made to prescriptions is automatically logged here by database triggers.</p>
         <table class="data-table">
           <thead><tr><th>Table</th><th>Operation</th><th>Record ID</th><th>Old Value</th><th>New Value</th><th>Changed At</th></tr></thead>
@@ -508,6 +508,8 @@
 </div>
 
 <!-- Scripts -->
+<script src="https://unpkg.com/lucide@latest"></script>
+<script src="js/icons.js?v=7"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="js/config.js?v=6"></script>
@@ -527,7 +529,7 @@
 <script>
   // ── Theme
   (function(){
-    const t = localStorage.getItem('medtrack-theme') || 'dark';
+    const t = localStorage.getItem('medtrack-theme') || 'light';
     document.documentElement.setAttribute('data-theme', t);
     updateThemeLabel(t);
   })();
@@ -539,7 +541,7 @@
     updateThemeLabel(next);
   }
   function updateThemeLabel(t){
-    document.getElementById('theme-icon').textContent  = t === 'dark' ? '☀️' : '🌙';
+    document.getElementById('theme-icon').setAttribute('data-lucide', t === 'dark' ? 'sun' : 'moon');
     document.getElementById('theme-label').textContent = t === 'dark' ? 'Light mode' : 'Dark mode';
   }
 
