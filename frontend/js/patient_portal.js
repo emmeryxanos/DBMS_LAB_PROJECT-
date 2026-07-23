@@ -65,6 +65,7 @@ async function init() {
   loadMyPrescriptions();
   loadMedicineDropdown();
   loadMySideEffects();
+  loadMyReports();
   loadMyAppointments();
   loadStatusChart();
   loadDoctorsDropdown();
@@ -326,6 +327,57 @@ async function loadMySideEffects() {
       <td>${new Date(s.reported_at).toLocaleDateString()}</td>
     </tr>`;
   }).join('');
+}
+
+// ── Upload test report
+const REPORT_MAX_SIZE  = 5 * 1024 * 1024;
+const REPORT_ALLOWED_EXT = ['pdf', 'jpg', 'jpeg'];
+
+async function uploadReport() {
+  const fileInput = document.getElementById('report-file');
+  const file       = fileInput.files[0];
+  const msgEl      = document.getElementById('report-msg');
+
+  if (!file) {
+    msgEl.innerHTML = `<div class="result-warning" style="padding:8px 12px;border-radius:6px">Please choose a file to upload.</div>`;
+    return;
+  }
+  const ext = file.name.split('.').pop().toLowerCase();
+  if (!REPORT_ALLOWED_EXT.includes(ext)) {
+    msgEl.innerHTML = `<div class="result-warning" style="padding:8px 12px;border-radius:6px">Only PDF, JPG, or JPEG files are allowed.</div>`;
+    return;
+  }
+  if (file.size > REPORT_MAX_SIZE) {
+    msgEl.innerHTML = `<div class="result-warning" style="padding:8px 12px;border-radius:6px">File exceeds the 5MB size limit.</div>`;
+    return;
+  }
+
+  try {
+    const formData = new FormData();
+    formData.append('patient_id', PATIENT_ID);
+    formData.append('file', file);
+    await api.uploadReport(formData);
+    msgEl.innerHTML = `<div class="result-safe" style="padding:8px 12px;border-radius:6px;display:flex;align-items:center;gap:7px"><i class="icon icon-sm" data-lucide="check-circle"></i>Report uploaded!</div>`;
+    fileInput.value = '';
+    loadMyReports();
+    setTimeout(() => msgEl.innerHTML = '', 3000);
+  } catch (e) {
+    msgEl.innerHTML = `<div class="result-danger" style="padding:8px 12px;border-radius:6px">Error: ${e.message}</div>`;
+  }
+}
+
+// ── My uploaded reports
+async function loadMyReports() {
+  const data  = await api.portalReports(PATIENT_ID);
+  const tbody = document.getElementById('my-reports');
+  if (!tbody) return;
+  if (!data?.length) { tbody.innerHTML = '<tr><td colspan="4" class="empty">No reports uploaded yet</td></tr>'; return; }
+  tbody.innerHTML = data.map(r => `<tr>
+    <td>${r.file_name}</td>
+    <td>${r.file_type.toUpperCase()}</td>
+    <td>${new Date(r.uploaded_at).toLocaleDateString()}</td>
+    <td>${r.url ? `<a href="${r.url}" target="_blank" rel="noopener">View</a>` : '—'}</td>
+  </tr>`).join('');
 }
 
 // ── My appointments

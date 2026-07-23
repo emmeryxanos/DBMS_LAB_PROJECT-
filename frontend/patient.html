@@ -33,6 +33,9 @@
     <a class="nav-link" onclick="showTab('sideeffects', this)">
       <span class="nav-link-icon-wrap"><i class="nav-link-icon icon" data-lucide="alert-triangle"></i></span> Side Effects
     </a>
+    <a class="nav-link" onclick="showTab('reports', this)">
+      <span class="nav-link-icon-wrap"><i class="nav-link-icon icon" data-lucide="file-text"></i></span> Upload Test Report
+    </a>
     <a class="nav-link" onclick="showTab('history', this)">
       <span class="nav-link-icon-wrap"><i class="nav-link-icon icon" data-lucide="bar-chart-3"></i></span> My History
     </a>
@@ -255,6 +258,30 @@
       </div>
     </div>
 
+    <!-- ══ TAB: REPORTS ══ -->
+    <div class="section" id="tab-reports">
+      <div class="two-col">
+        <div class="card">
+          <div class="card-head"><span class="card-title"><i class="icon" data-lucide="file-text"></i>Upload Test Report</span></div>
+
+          <div class="form-group" style="margin-bottom:1.2rem">
+            <label class="form-label">Report File (PDF, JPG — max 5MB)</label>
+            <input type="file" id="report-file" class="form-select" accept=".pdf,.jpg,.jpeg">
+          </div>
+          <button class="btn btn-primary" onclick="uploadReport()"><i class="icon" data-lucide="upload"></i>Upload Report</button>
+          <div id="report-msg" style="margin-top:12px"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-head"><span class="card-title"><i class="icon" data-lucide="clipboard-list"></i>My Uploaded Reports</span></div>
+          <table class="data-table">
+            <thead><tr><th>File Name</th><th>Type</th><th>Uploaded</th><th></th></tr></thead>
+            <tbody id="my-reports"><tr><td colspan="4" class="empty">Loading...</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
     <!-- ══ TAB: HISTORY ══ -->
     <div class="section" id="tab-history">
       <div class="two-col">
@@ -359,7 +386,8 @@
     const titles = {
       overview:'My Health Overview', medicines:'My Medicines',
       recovery:'Recovery Log', prescriptions:'My Prescriptions',
-      sideeffects:'Side Effects', history:'My History', access:'Doctor Access'
+      sideeffects:'Side Effects', reports:'Upload Test Report',
+      history:'My History', access:'Doctor Access'
     };
     document.getElementById('page-title').textContent = titles[name] || name;
   }

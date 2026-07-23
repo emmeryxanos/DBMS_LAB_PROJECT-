@@ -16,6 +16,8 @@ from app.auth import require_role, get_current_user, CurrentUser
 
 router = APIRouter(dependencies=[Depends(require_role("doctor", "admin"))])
 
+REPORTS_BUCKET = "patient-reports"
+
 
 def _scoped_patient_ids(user: CurrentUser) -> Optional[list[int]]:
     """None means 'no scoping' (admin sees everyone). Empty list means
@@ -223,3 +225,22 @@ async def recovery_concerns(user: CurrentUser = Depends(get_current_user)):
                 "severity": "critical" if recovery_trend <= -3 else "high",
             })
     return concerns
+
+
+@router.get("/patient-reports")
+async def patient_reports(user: CurrentUser = Depends(get_current_user)):
+    """Test reports (PDF/JPG) uploaded by patients, across the doctor's granted patients."""
+    patient_ids = _scoped_patient_ids(user)
+    if patient_ids is not None and not patient_ids:
+        return []
+
+    q = supabase.table("patientreport").select("report_id, file_name, file_type, storage_path, uploaded_at, patient(full_name)")
+    if patient_ids is not None:
+        q = q.in_("patient_id", patient_ids)
+    rows = q.order("uploaded_at", desc=True).execute().data or []
+
+    for r in rows:
+        r["full_name"] = (r.pop("patient", None) or {}).get("full_name", "—")
+        signed = supabase.storage.from_(REPORTS_BUCKET).create_signed_url(r["storage_path"], 3600)
+        r["url"] = signed.get("signedURL") or signed.get("signed_url")
+    return rows

@@ -17,11 +17,12 @@ async function apiFetch(path, options = {}) {
   const { data: { session } } = await db.auth.getSession();
   const token      = session?.access_token;
   const activeRole = sessionStorage.getItem('medtrack-active-role');
+  const { isFormData, ...fetchOptions } = options;
 
   const res = await fetch(API_BASE + path, {
-    ...options,
+    ...fetchOptions,
     headers: {
-      'Content-Type': 'application/json',
+      ...(isFormData ? {} : { 'Content-Type': 'application/json' }),
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
       ...(activeRole ? { 'X-Role': activeRole } : {}),
       ...(options.headers || {}),
@@ -117,6 +118,8 @@ const api = {
   portalAppointments:(pid) => apiFetch(`/api/portal/appointments/${pid}`),
   portalAllergies:  (pid)  => apiFetch(`/api/portal/allergies/${pid}`),
   reportAllergy:    (body) => apiFetch('/api/portal/allergies', { method: 'POST', body: JSON.stringify(body) }),
+  portalReports:    (pid)  => apiFetch(`/api/portal/reports/${pid}`),
+  uploadReport:     (formData) => apiFetch('/api/portal/reports', { method: 'POST', body: formData, isFormData: true }),
 
   // ── Doctor reports/analytics
   reportRisk:               () => apiFetch('/api/reports/risk'),
@@ -125,4 +128,5 @@ const api = {
   reportDiseaseDistribution:() => apiFetch('/api/reports/disease-distribution'),
   reportSideEffectAlerts:   () => apiFetch('/api/reports/side-effect-alerts'),
   reportRecoveryConcerns:   () => apiFetch('/api/reports/recovery-concerns'),
+  reportPatientReports:     () => apiFetch('/api/reports/patient-reports'),
 };

@@ -27,6 +27,7 @@ ALTER TABLE medicineallergyconflict ENABLE ROW LEVEL SECURITY;
 ALTER TABLE patient                 ENABLE ROW LEVEL SECURITY;
 ALTER TABLE patientallergy          ENABLE ROW LEVEL SECURITY;
 ALTER TABLE patientdiseasehistory   ENABLE ROW LEVEL SECURITY;
+ALTER TABLE patientreport           ENABLE ROW LEVEL SECURITY;
 ALTER TABLE pharmacyinventory       ENABLE ROW LEVEL SECURITY;
 ALTER TABLE prescription            ENABLE ROW LEVEL SECURITY;
 ALTER TABLE prescriptionmedicine    ENABLE ROW LEVEL SECURITY;

@@ -1,10 +1,15 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, Form, status
 from datetime import datetime
+from uuid import uuid4
 from app.database import supabase
 from app.models.schemas import RecoveryLogIn, SideEffectIn, PatientAllergyIn
 from app.auth import CurrentUser, get_current_user, require_self_or_roles, require_self_or_granted_doctor
 
 router = APIRouter()
+
+REPORTS_BUCKET = "patient-reports"
+ALLOWED_REPORT_TYPES = {"pdf", "jpg", "jpeg"}
+MAX_REPORT_SIZE = 5 * 1024 * 1024
 
 
 def _assert_patient_self_or_granted(user: CurrentUser, patient_id: int):
@@ -232,3 +237,48 @@ async def get_patient_allergies(patient_id: int):
         .order("noted_date", desc=True) \
         .execute()
     return result.data or []
+
+
+@router.get("/reports/{patient_id}", dependencies=[Depends(require_self_or_granted_doctor("admin"))])
+async def get_patient_reports(patient_id: int):
+    result = supabase.table("patientreport") \
+        .select("report_id, file_name, file_type, storage_path, uploaded_at") \
+        .eq("patient_id", patient_id) \
+        .order("uploaded_at", desc=True) \
+        .execute()
+    reports = result.data or []
+    for r in reports:
+        signed = supabase.storage.from_(REPORTS_BUCKET).create_signed_url(r["storage_path"], 3600)
+        r["url"] = signed.get("signedURL") or signed.get("signed_url")
+    return reports
+
+
+@router.post("/reports")
+async def upload_patient_report(
+    patient_id: int = Form(...),
+    file: UploadFile = File(...),
+    user: CurrentUser = Depends(get_current_user),
+):
+    _assert_patient_self_or_granted(user, patient_id)
+
+    ext = (file.filename.rsplit(".", 1)[-1] if "." in file.filename else "").lower()
+    if ext not in ALLOWED_REPORT_TYPES:
+        raise HTTPException(status.HTTP_400_BAD_REQUEST, "Only PDF, JPG, or JPEG files are allowed")
+
+    contents = await file.read()
+    if len(contents) > MAX_REPORT_SIZE:
+        raise HTTPException(status.HTTP_400_BAD_REQUEST, "File exceeds the 5MB size limit")
+
+    storage_path = f"{patient_id}/{uuid4().hex}_{file.filename}"
+    content_type = "application/pdf" if ext == "pdf" else f"image/{ext}"
+    supabase.storage.from_(REPORTS_BUCKET).upload(
+        storage_path, contents, {"content-type": content_type}
+    )
+
+    result = supabase.table("patientreport").insert({
+        "patient_id":   patient_id,
+        "file_name":    file.filename,
+        "file_type":    ext,
+        "storage_path": storage_path,
+    }).execute()
+    return result.data[0] if result.data else {"success": True}

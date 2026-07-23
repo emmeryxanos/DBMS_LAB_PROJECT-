@@ -41,14 +41,11 @@
       <span class="nav-link-icon-wrap"><i class="nav-link-icon icon" data-lucide="bar-chart-3"></i></span> Risk Scores
     </a>
     <p class="nav-group-label">Operations</p>
-    <a class="nav-link" onclick="showSection('pharmacy',this)">
-      <span class="nav-link-icon-wrap"><i class="nav-link-icon icon" data-lucide="package"></i></span> Pharmacy Stock
-    </a>
     <a class="nav-link" onclick="showSection('reports',this)">
-      <span class="nav-link-icon-wrap"><i class="nav-link-icon icon" data-lucide="trending-up"></i></span> Reports
+      <span class="nav-link-icon-wrap"><i class="nav-link-icon icon" data-lucide="trending-up"></i></span> Alert Reports
     </a>
-    <a class="nav-link" onclick="showSection('audit',this)">
-      <span class="nav-link-icon-wrap"><i class="nav-link-icon icon" data-lucide="history"></i></span> Audit Log
+    <a class="nav-link" onclick="showSection('patientreports',this)">
+      <span class="nav-link-icon-wrap"><i class="nav-link-icon icon" data-lucide="file-text"></i></span> Patient Reports
     </a>
     <p class="nav-group-label">Portal</p>
   </nav>
@@ -422,36 +419,6 @@
       </div>
     </div>
 
-    <!-- ══ PHARMACY ══ -->
-    <div class="section" id="section-pharmacy">
-      <div class="two-col">
-        <div class="card">
-          <div class="card-head">
-            <span class="card-title"><i class="icon" data-lucide="alert-triangle"></i>Low Stock Alerts</span>
-            <span class="pill red" id="low-stock-count">0</span>
-          </div>
-          <table class="data-table">
-            <thead><tr><th>Medicine</th><th>Stock</th><th>Expiry</th><th>Status</th></tr></thead>
-            <tbody id="low-stock-list"><tr><td colspan="4"><div class="skeleton-list"></div></td></tr></tbody>
-          </table>
-        </div>
-        <div class="card">
-          <div class="card-head"><span class="card-title"><i class="icon" data-lucide="award"></i>Most Prescribed Medicines</span></div>
-          <table class="data-table">
-            <thead><tr><th>Rank</th><th>Medicine</th><th>Brand</th><th>Count</th></tr></thead>
-            <tbody id="top-medicines"><tr><td colspan="4"><div class="skeleton-list"></div></td></tr></tbody>
-          </table>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-head"><span class="card-title"><i class="icon" data-lucide="package"></i>Full Pharmacy Inventory</span></div>
-        <table class="data-table">
-          <thead><tr><th>Medicine</th><th>Brand</th><th>Type</th><th>Stock</th><th>Expiry</th><th>Status</th></tr></thead>
-          <tbody id="full-inventory"><tr><td colspan="6"><div class="skeleton-list"></div></td></tr></tbody>
-        </table>
-      </div>
-    </div>
-
     <!-- ══ REPORTS ══ -->
     <div class="section" id="section-reports">
       <div class="card">
@@ -492,14 +459,14 @@
       </div>
     </div>
 
-    <!-- ══ AUDIT ══ -->
-    <div class="section" id="section-audit">
+    <!-- ══ PATIENT REPORTS ══ -->
+    <div class="section" id="section-patientreports">
       <div class="card">
-        <div class="card-head"><span class="card-title"><i class="icon" data-lucide="history"></i>Prescription Audit Trail</span></div>
-        <p class="card-desc">Every change made to prescriptions is automatically logged here by database triggers.</p>
+        <div class="card-head"><span class="card-title"><i class="icon" data-lucide="file-text"></i>Patient-Uploaded Test Reports</span></div>
+        <p class="card-desc">PDF/JPG test reports uploaded by patients you currently have access to.</p>
         <table class="data-table">
-          <thead><tr><th>Table</th><th>Operation</th><th>Record ID</th><th>Old Value</th><th>New Value</th><th>Changed At</th></tr></thead>
-          <tbody id="audit-list"><tr><td colspan="6" class="empty">No audit records yet — changes to prescriptions will appear here automatically.</td></tr></tbody>
+          <thead><tr><th>Patient</th><th>File Name</th><th>Type</th><th>Uploaded</th><th></th></tr></thead>
+          <tbody id="patient-reports-list"><tr><td colspan="5"><div class="skeleton-list"></div></td></tr></tbody>
         </table>
       </div>
     </div>
@@ -522,8 +489,8 @@
 <script src="js/appointments.js?v=6"></script>
 <script src="js/charts.js?v=6"></script>
 <script src="js/interactions.js?v=6"></script>
-<script src="js/pharmacy.js?v=6"></script>
 <script src="js/reports.js?v=6"></script>
+<script src="js/patient_reports.js?v=1"></script>
 <script src="js/risk.js?v=6"></script>
 
 <script>
@@ -555,8 +522,8 @@
       overview:'Dashboard', patients:'Patients', prescriptions:'Prescriptions',
       appointments:'Appointment Requests',
       interactions:'Drug Interactions', allergies:'Allergy Conflicts',
-      risk:'Risk Scores', pharmacy:'Pharmacy Stock',
-      reports:'Reports', audit:'Audit Log'
+      risk:'Risk Scores',
+      reports:'Alert Reports', patientreports:'Patient Reports'
     };
     document.getElementById('page-title').textContent = titles[name] || name;
   }
